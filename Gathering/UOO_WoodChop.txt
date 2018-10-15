@@ -1,0 +1,114 @@
+/////////////////////////////////////////////
+// UO Steam Lumber Macro
+// for Outlands
+// 
+// * equips axe and chops lumber
+// * detects overweight
+// * uses camping during lumber chop but on a different
+//   timer than the woodchopping since you cannot camp
+//   as fast as you can chop. 
+// * cuts one kindling with start dagger if it has none
+//   keeping 1 in pack at all times for the next camp
+// * weaves hiding into lumber and camping  - might be useful
+/////////////////////////////////////////////
+
+// Create camping timer
+if not timerexists 'camping'
+   createtimer 'camping'
+endif
+
+// Create hiding timer
+if not timerexists 'hiding'
+   createtimer 'hiding'
+endif
+
+// While we not overloaded
+while diffweight > 10
+
+  //Check holding hatchet
+  if not @findlayer 'self' 1
+    @unsetalias 'Hatchet'
+  endif
+
+  //Equip hatchet or stop with msg
+  if not findalias 'Hatchet'
+    if @findtype '0xf44' 'any' 'backpack'
+      @setalias 'Hatchet' 'found'
+    else
+      headmsg 'No Hatchet found' '55' 'self'
+      stop
+    endif
+  endif
+
+  canceltarget
+  clearjournal
+
+  // Equip Hatchet
+  if not @findlayer 'self' 2
+    equipitem 'Hatchet' 2
+    pause 600
+  endif
+
+  // Use Hachet
+  useobject 'Hatchet'
+  waitfortarget 15000
+  target! 'self'
+  pause 500
+
+  // Check if we need kindling
+  if counttype 0xde1 'any' 'backpack' < 1
+    if @findtype '0xf52' 'any' 'backpack'
+        useobject 'found'
+        waitfortarget 5000
+        target! 'self'
+        pause 500
+    endif
+  endif
+
+  // Camp once every 3 seconds
+  if timer 'camping' > 3000
+    // Burn up the kindling once
+    if @findtype 0xde1 'any' 'backpack'
+       useobject 'found'
+       settimer 'camping' 0
+    endif
+  endif
+
+  // Hide once very 11 seconds
+  if timer 'hiding' > 11000
+    useskill 'hiding'
+    settimer 'hiding' 0
+  endif
+
+  // Wait for results
+  for 60
+    if @injournal 'enough wood here' 'system'
+      headmsg 'NO MORE WOOD' '23'
+      pause 3000
+      break
+    elseif @injournal 'You chop' 'system'
+      break
+    elseif @injournal "fail to" "system"
+      break
+    elseif @injournal "You can" "system"
+      break
+    elseif @injournal "harvestable" "system"
+      headmsg 'FIND A TREE' '91'
+      break
+    elseif not @findlayer 'self' 2
+      headmsg 'NO AXE EQUIPPED' '23'
+      break
+    else
+      pause 100
+    endif
+  endfor
+
+  //
+  // Check weight
+  // 
+  if diffweight < 10
+    headmsg 'UNLOAD!' '23'
+    stop
+  endif
+
+endwhile
