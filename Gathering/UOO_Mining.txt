@@ -1,0 +1,111 @@
+/////////////////////////////////////////////
+// UO Steam Mining Macro
+// for Outlands
+// 
+// * equips pick and mines
+// * detects overweight
+// * if you have kindling it will attempt to camp
+// * weaves hiding into mining to level it up
+// * warns on 1 pick left
+// * emotes whistle every 20 seconds
+/////////////////////////////////////////////
+
+// Create camping timer
+removetimer camping
+createtimer 'camping'
+
+// Create hiding timer
+removetimer 'hiding'
+createtimer 'hiding'
+
+// Create whistle timer
+removetimer 'whistle'
+createtimer 'whistle'
+
+// While we not overloaded
+while diffweight > 10
+
+  //Check holding pickaxe
+  if not @findlayer 'self' 1
+    @unsetalias 'Pickaxe'
+  endif
+
+  //Equip pickaxe or stop with msg
+  if not findalias 'Pickaxe'
+    if @findtype '0xe86' 'any' 'backpack'
+      @setalias 'Pickaxe' 'found'
+    else
+      headmsg 'No Pickaxes found!' '55' 'self'
+      stop
+    endif
+  endif
+
+  canceltarget
+  clearjournal
+
+  // Equip Pickaxe
+  if not @findlayer 'self' 1
+    equipitem 'Pickaxe' 2
+    pause 600
+  endif
+
+  if counttype '0xe86' 'any' 'backpack' == 1
+  	sysmsg "On last Pick!" 38
+  endif
+
+  // Use Pickaxe
+  useobject 'Pickaxe'
+  waitfortarget 15000
+  target! 'self'
+  pause 500
+
+  // Camp once every 3 seconds
+  if timer 'camping' > 3000
+    // Burn up the kindling once
+    if @findtype 0xde1 'any' 'backpack'
+       useobject 'found'
+       settimer 'camping' 0
+    endif
+  endif
+
+  // Hide once very 11 seconds
+  if timer 'hiding' > 11000
+    useskill 'hiding'
+    settimer 'hiding' 0
+  endif
+
+  // Wait for results
+  for 60
+    if @injournal 'You dig' 'system'
+      break
+    elseif @injournal "You loosen" "system"
+      break
+    elseif @injournal "You find" "system"
+      msg "well look at that..."
+      break
+    elseif @injournal "harvestable" "system"
+      headmsg 'Find a new spot' '43'
+      pause 1000
+      break
+    elseif not @findlayer 'self' 1
+      headmsg 'NO PICK EQUIPPED' '23'
+      break
+    else
+      pause 100
+    endif
+  endfor
+
+  if timer 'whistle' > 20000
+    emotemsg 'whistles'
+    settimer 'whistle' 0
+  endif
+
+  //
+  // Check weight
+  // 
+  if diffweight < 10
+    headmsg 'Unload!' '23'
+    stop
+  endif
+
+endwhile
