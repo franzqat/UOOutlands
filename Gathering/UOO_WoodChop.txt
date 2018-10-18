@@ -10,30 +10,72 @@
 // * cuts one kindling with start dagger if it has none
 //   keeping 1 in pack at all times for the next camp
 // * weaves hiding into lumber and camping  - might be useful
+// * if you are full weight, you will be asked to unload. Its dangerous
+//   to overload yourself (cannot run from PKs or monsters). So either drop
+//   on ground or runner.
+// * script will check for 3 consecutive messages for no lumber, since you can 
+//   get one message from one tree, but be standing near another tree and be
+//   able to continue chopping without having to move.
+//
 /////////////////////////////////////////////
 
+//
 // Create camping timer
+//
 if not timerexists 'camping'
    createtimer 'camping'
 endif
 
+//
 // Create hiding timer
+//
 if not timerexists 'hiding'
    createtimer 'hiding'
 endif
 
-// While we not overloaded
-while diffweight > 10
+//
+// Clear hands
+//
+clearhands 'both'
+pause 1000
 
-  //Check holding hatchet
-  if not @findlayer 'self' 1
+//
+// Create Messages list
+//
+@removelist 'Messages'
+@createlist 'Messages'
+
+//
+// While alive
+//
+while hits > 0
+
+  //
+  // Check weight
+  // 
+  if diffweight < 10
+    headmsg 'I am too heavy, please unload me' '23'
+    pause 5000
+    continue    
+  endif
+
+  // 
+  // Check holding hatchet
+  // 
+  if not @findlayer 'self' 2
+    sysmsg "unset hatchet"
     @unsetalias 'Hatchet'
   endif
 
-  //Equip hatchet or stop with msg
+  // 
+  // Equip hatchet or stop with msg
+  // 
   if not findalias 'Hatchet'
     if @findtype '0xf44' 'any' 'backpack'
       @setalias 'Hatchet' 'found'
+      // This equips it
+	  useobject 'Hatchet'
+	  pause 1000
     else
       headmsg 'No Hatchet found' '55' 'self'
       stop
@@ -43,48 +85,53 @@ while diffweight > 10
   canceltarget
   clearjournal
 
-  // Equip Hatchet
-  if not @findlayer 'self' 2
-    equipitem 'Hatchet' 2
-    pause 600
-  endif
-
-  // Use Hachet
   useobject 'Hatchet'
-  waitfortarget 15000
+  waitfortarget 5000
   target! 'self'
-  pause 500
+  pause 100
 
+  //
   // Check if we need kindling
-  if counttype 0xde1 'any' 'backpack' < 1
-    if @findtype '0xf52' 'any' 'backpack'
-        useobject 'found'
-        waitfortarget 5000
-        target! 'self'
-        pause 500
-    endif
+  //
+  if skill 'camping' < 100
+	  //
+	  // Check if we need kindling
+	  //
+	  if counttype 0xde1 'any' 'backpack' < 1
+	    if @findtype '0xf52' 'any' 'backpack'
+	        useobject 'found'
+	        waitfortarget 5000
+	        target! 'self'
+	        pause 500
+	    endif
+	  endif
+	  //
+	  // Camp once every 3 seconds
+	  //
+	  if timer 'camping' > 3000
+	    if @findtype 0xde1 'any' 'backpack'
+	       useobject 'found'
+	       settimer 'camping' 0
+	    endif
+	  endif
   endif
 
-  // Camp once every 3 seconds
-  if timer 'camping' > 3000
-    // Burn up the kindling once
-    if @findtype 0xde1 'any' 'backpack'
-       useobject 'found'
-       settimer 'camping' 0
-    endif
+  //
+  // Try to hide every 11 seconds
+  //
+  if skill 'hiding' < 100
+	  if timer 'hiding' > 11000
+	    useskill 'hiding'
+	    settimer 'hiding' 0
+	  endif
   endif
 
-  // Hide once very 11 seconds
-  if timer 'hiding' > 11000
-    useskill 'hiding'
-    settimer 'hiding' 0
-  endif
-
+  //
   // Wait for results
+  //
   for 60
     if @injournal 'enough wood here' 'system'
-      headmsg 'NO MORE WOOD' '23'
-      pause 3000
+      pushlist 'Messages' 'You need to move'
       break
     elseif @injournal 'You chop' 'system'
       break
@@ -93,7 +140,7 @@ while diffweight > 10
     elseif @injournal "You can" "system"
       break
     elseif @injournal "harvestable" "system"
-      headmsg 'FIND A TREE' '91'
+      pushlist 'Messages' 'You need to move'
       break
     elseif not @findlayer 'self' 2
       headmsg 'NO AXE EQUIPPED' '23'
@@ -104,11 +151,13 @@ while diffweight > 10
   endfor
 
   //
-  // Check weight
+  // See if character really needs to move or not
   // 
-  if diffweight < 10
-    headmsg 'UNLOAD!' '23'
-    stop
+  if list 'Messages' > 2
+  	headmsg "Find another tree!" 44
+  	removelist 'Messages'
+  	createlist 'Messages'
+  	pause 3000
   endif
 
 endwhile
