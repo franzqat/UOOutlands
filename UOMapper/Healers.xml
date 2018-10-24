@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pack Name="Healers" Revision="0">
+  <Marker Name="Shelter Healer" X="1907" Y="2584" Icon="HEALER" Facet="0"/>
+  <Marker Name="Prevalia Healer" X="1892" Y="1657" Icon="HEALER" Facet="0"/>
+  <Marker Name="Prevalia Healer" X="1684" Y="1554" Icon="HEALER" Facet="0"/>
+  <Marker Name="Cambria Healer" X="1686" Y="2940" Icon="HEALER" Facet="0"/>
+  <Marker Name="Cambria Healer" X="1844" Y="2904" Icon="HEALER" Facet="0"/>
+  <Marker Name="Andaria Healer" X="2175" Y="605" Icon="HEALER" Facet="0"/>
+  <Marker Name="Andaria Healer" X="2231" Y="762" Icon="HEALER" Facet="0"/>
+  <Marker Name="Horseshoe Bay Healer" X="2017" Y="2262" Icon="HEALER" Facet="0"/>
+  <Marker Name="Terran Healer" X="735" Y="1531" Icon="HEALER" Facet="0"/>
+  <Marker Name="Corpse Creek Healer" X="893" Y="736" Icon="HEALER" Facet="0"/>
+  <Marker Name="Outpost Healer" X="3058" Y="571" Icon="HEALER" Facet="0"/>
+  <Marker Name="healer" X="2468" Y="359" Icon="HEALER" Facet="0"/>
+  <Marker Name="healer" X="1445" Y="714" Icon="HEALER" Facet="0"/>
+  <Marker Name="healer" X="1273" Y="1619" Icon="HEALER" Facet="0"/>
+  <Marker Name="healer" X="1488" Y="1899" Icon="HEALER" Facet="0"/>
+  <Marker Name="healer" X="1469" Y="2844" Icon="HEALER" Facet="0"/>
+  <Marker Name="healer" X="1546" Y="2699" Icon="POINTOFINTEREST" Facet="0"/>
+  <Marker Name="healer" X="1600" Y="2566" Icon="POINTOFINTEREST" Facet="0"/>
+  <Marker Name="healer" X="1717" Y="2306" Icon="HEALER" Facet="0"/>
+  <Marker Name="healer" X="1204" Y="2358" Icon="HEALER" Facet="0"/>
+  <Marker Name="healer" X="1526" Y="549" Icon="HEALER" Facet="0"/>
+  <Marker Name="healer" X="2800" Y="561" Icon="HEALER" Facet="0"/>
+  <Marker Name="healer" X="2889" Y="422" Icon="HEALER" Facet="0"/>
+</Pack>
