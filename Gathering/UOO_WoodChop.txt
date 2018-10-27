@@ -123,13 +123,16 @@ while hits > 0
                 //
                 if @counttype 0x1bd7 0 'backpack' > 0
                     @usetype 0x1034 'any' 'backpack'
-                    waitforgump 0x669e28e1 5000
-                    replygump 0x669e28e1 100
-                    waitforgump 0x669e28e1 5000
-                    replygump 0x669e28e1 200
-                    waitforgump 0x669e28e1 5000
-                    waitforgump 0x669e28e1 5000
-                    replygump 0x669e28e1 0
+                    pause 1000
+                    replygump 0x38920abd 100
+                    pause 1000
+                    replygump 0x38920abd 200
+                    pause 1000
+                    replygump 0x38920abd 0
+                    pause 1000
+                    replygump 0x38920abd 0
+                    pause 1000
+                    replygump 0x38920abd 0
                     pause 1000
                 endif
             endif
