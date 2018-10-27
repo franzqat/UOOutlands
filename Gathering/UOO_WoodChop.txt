@@ -26,6 +26,12 @@
 //
 // [IMPORTANT! Make sure your wood craft source wood is 'Regular']
 //
+// v1.3
+//
+// * fixed launch kindling issue with saws
+//
+// [IMPORTANT! Make sure your wood craft source wood is 'Regular']
+//
 /////////////////////////////////////////////
 
 //
