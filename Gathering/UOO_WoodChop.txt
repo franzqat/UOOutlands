@@ -110,6 +110,30 @@ while hits > 0
     // If working on camping skill
     //
     if skill 'camping' < 100
+        //
+        // Check if we need kindling, try to use saw
+        //
+        if counttype 0xde1 '0' 'backpack' < 1
+            //
+            // If we have a saw
+            //
+            if @findtype 0x1034 'any' 'backpack'
+                //
+                // If we have boards
+                //
+                if @counttype 0x1bd7 0 'backpack' > 0
+                    @usetype 0x1034 'any' 'backpack'
+                    waitforgump 0x669e28e1 5000
+                    replygump 0x669e28e1 100
+                    waitforgump 0x669e28e1 5000
+                    replygump 0x669e28e1 200
+                    waitforgump 0x669e28e1 5000
+                    waitforgump 0x669e28e1 5000
+                    replygump 0x669e28e1 0
+                    pause 1000
+                endif
+            endif
+        endif
 
         //
         // Backup kindling method : dagger
