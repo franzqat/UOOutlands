@@ -25,7 +25,12 @@ createtimer 'whistle'
 // While we not overloaded
 while diffweight > 10
 
-  //Find shovel or stop with msg
+  //Check holding shovel
+  if not @findlayer 'self' 1
+    @unsetalias 'shovel'
+  endif
+
+  //Equip shovel or stop with msg
   if not findalias 'shovel'
     if @findtype '0xf39' 'any' 'backpack'
       @setalias 'shovel' 'found'
@@ -38,8 +43,8 @@ while diffweight > 10
   canceltarget
   clearjournal
 
-  if counttype '0xf39' 'any' 'backpack' == 1
-    sysmsg "On last shovel!" 38
+  if counttype '0xe86' 'any' 'backpack' == 1
+  	sysmsg "On last shovel!" 38
   endif
 
   // Use shovel
@@ -75,6 +80,9 @@ while diffweight > 10
     elseif @injournal "harvestable" "system"
       headmsg 'Find a new spot' '43'
       pause 1000
+      break
+    elseif not @findlayer 'self' 1
+      headmsg 'NO shovel EQUIPPED' '23'
       break
     else
       pause 100
