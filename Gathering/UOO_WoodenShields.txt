@@ -1,0 +1,62 @@
+/////////////////////////////////////////////
+// UO Steam Shield Crafting Macro
+// for Outlands
+// v1.0
+//
+// * crafts wooden shields and sells them to a nearby vendor
+// 
+// REQUIRES:
+// =========
+// 1) You have wooden shields on vendor sell agent [x] Enabled
+// 2) You the correct type of wood pre-selected in crafting menu
+// 3) You have saws
+// 4) You have boards (if you have logs, click them to make boards)
+//
+// You can use any wood you want, just make sure crafting menu has 
+// board type selected you want to use first.
+//
+/////////////////////////////////////////////
+
+///
+/// while enough boards
+///
+
+while counttype 0x1034 'any' 'backpack' >= 6
+
+    //
+    // Check weight
+    // 
+    if diffweight < 10
+        headmsg 'I am too heavy, please unload me' '88'
+        pause 5000
+        continue    
+    endif
+
+    //
+    // Craft
+    //
+    if @findtype 0x1034 'any' 'backpack'
+		useobject 'found'
+		waitforgump 0x38920abd 5000
+		replygump 0x38920abd 101
+		waitforgump 0x38920abd 5000
+		replygump 0x38920abd 205
+		waitforgump 0x38920abd 5000
+		pause 1000
+		waitforgump 0x38920abd 5000
+		replygump 0x38920abd 0
+    else
+        headmsg 'I have no saws, please give me some' '88'
+        pause 5000
+        continue  
+    endif
+
+    // 
+    // Sell
+    // 
+	while @counttype 0x1b7a 'any' 'backpack' > 0
+    	msg "vendor sell"
+    	pause 1000
+    endwhile
+
+endwhile
