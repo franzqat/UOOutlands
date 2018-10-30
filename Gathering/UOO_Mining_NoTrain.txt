@@ -38,6 +38,14 @@ while hits > 0
     // 
     if diffweight < 10
         headmsg 'I am too heavy, please unload me' '23'
+
+        //
+        // Click ore (see if near forge)
+        //
+        if @findtype 0x19b9 'any' 'backpack'
+            useobject 'found'
+        endif
+
         pause 5000
         continue    
     endif
@@ -107,13 +115,6 @@ while hits > 0
     if timer 'whistle' > 20000
         emotemsg 'whistles'
         settimer 'whistle' 0
-    endif
-
-    //
-    // Click ore
-    //
-    if @findtype 0x19b9 'any' 'backpack'
-        useobject 'found'
     endif
 
 endwhile
