@@ -46,7 +46,7 @@ while hits > 0
     //
     // Check ore cache
     // 
-    if diffweight < 100
+    if diffweight < 30
         while @findtype 0x19b9 'any' 'backpack'
             useobject 'found'
             pause 500
