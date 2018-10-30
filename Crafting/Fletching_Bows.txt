@@ -21,17 +21,21 @@ promptalias 'Savebag'
 @unsetalias 'SellBag'
 promptalias 'SellBag'
 
-
 @useobject 'SaveBag'
 pause 300
 @useobject 'SellBag'
 pause 300
 
-
+//
+// Hide
+//
 if not hidden 'self' and skill 'hiding' >= 50
   useskill 'hiding'
 endif
 
+// 
+// Wood check
+//
 if counttype 0x1bd7 'any' 'backpack' < 10
     headmsg 'I have no boards!' '88'
     stop
