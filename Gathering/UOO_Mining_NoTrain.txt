@@ -3,6 +3,7 @@
 // for Outlands
 //
 // * just mines ore, nothing else
+// * clicks ore in case you near forge
 /////////////////////////////////////////////
 
 //
@@ -38,16 +39,18 @@ while hits > 0
     // 
     if diffweight < 10
         headmsg 'I am too heavy, please unload me' '23'
-
-        //
-        // Click ore (see if near forge)
-        //
-        if @findtype 0x19b9 'any' 'backpack'
-            useobject 'found'
-        endif
-
         pause 5000
         continue    
+    endif
+
+    //
+    // Check ore cache
+    // 
+    if diffweight < 100
+        while @findtype 0x19b9 'any' 'backpack'
+            useobject 'found'
+            pause 500
+        endwhile
     endif
 
     // 
