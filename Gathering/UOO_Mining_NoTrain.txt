@@ -12,6 +12,17 @@ clearhands 'both'
 pause 1000
 
 //
+// Whistle timer
+// 
+removetimer 'whistle'
+createtimer 'whistle'
+
+//
+// Clear alias (possibly other macros)
+// 
+@unsetalias 'PickAxe'
+
+//
 // Create Messages list
 //
 @removelist 'Messages'
@@ -34,7 +45,8 @@ while hits > 0
     // 
     // Check holding pickaxe
     // 
-    if not @findlayer 'self' 2
+    if not @findlayer 'self' 1
+        pause 1000
         @unsetalias 'Pickaxe'
     endif
 
@@ -85,9 +97,19 @@ while hits > 0
         endif
     endfor
     
+    //
+    // Whistle
+    //
     if timer 'whistle' > 20000
         emotemsg 'whistles'
         settimer 'whistle' 0
+    endif
+
+    //
+    // Click ore
+    //
+    if @findtype 0x19b9 'any' 'backpack'
+        useobject 'found'
     endif
 
 endwhile
