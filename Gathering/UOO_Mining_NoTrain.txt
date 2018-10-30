@@ -65,6 +65,10 @@ while hits > 0
         endif
     endif
 
+    if counttype '0xe86' 'any' 'backpack' == 0
+        sysmsg "On last Pick!" 38
+    endif
+
     canceltarget
     clearjournal
 
