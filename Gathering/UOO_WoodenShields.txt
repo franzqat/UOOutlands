@@ -33,14 +33,28 @@ while counttype 0x1bd7 'any' 'backpack' >= 6
   // Craft
   //
   if @findtype 0x1034 'any' 'backpack'
+    //
+    // Use 3x = sometimes server doesnt respond
+    //
     useobject 'found'
-    waitforgump 0x38920abd 5000
+    pause 100
+    useobject 'found'
+    pause 100
+    useobject 'found'
+    pause 100
+    //
+    // Go through crafting menus
+    //
+    waitforgump 0x38920abd 1000
     replygump 0x38920abd 101
-    waitforgump 0x38920abd 5000
+    waitforgump 0x38920abd 1000
     replygump 0x38920abd 205
-    waitforgump 0x38920abd 5000
+    waitforgump 0x38920abd 1000
+    //
+    // Craft
+    //
     pause 1000
-    waitforgump 0x38920abd 5000
+    waitforgump 0x38920abd 1000
     replygump 0x38920abd 0
   else
     headmsg 'I have no saws, please give me some' '88'
