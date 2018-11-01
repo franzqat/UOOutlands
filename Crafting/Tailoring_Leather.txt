@@ -76,14 +76,6 @@ if not hidden 'self' and skill 'hiding' >= 50
 endif
 
 // 
-// Leather check
-//
-if counttype 0x1081 'any' 'backpack' < 15
-    headmsg 'I have no leather!' '88'
-    stop
-endif
-
-// 
 // Scissor check
 //
 if counttype 0xf9f 'any' 'backpack' < 1
@@ -127,7 +119,7 @@ while counttype 0x1081 'any' 'backpack' >= 15
         //
         // Make last
         // 
-        replygump 0x38920abd 7        
+        replygump 0x38920abd 7
         pause 2000
     else
         headmsg 'I have no sewing kits, please give me some' '88'
@@ -156,3 +148,11 @@ while counttype 0x1081 'any' 'backpack' >= 15
     endfor
 
 endwhile
+
+// 
+// Leather check
+//
+if counttype 0x1081 'any' 'backpack' < 15
+    headmsg 'I have no leather!' '88'
+    stop
+endif
