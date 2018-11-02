@@ -29,7 +29,7 @@ pause 300
 // Hide
 //
 if not hidden 'self' and skill 'hiding' >= 50
-  useskill 'hiding'
+    useskill 'hiding'
 endif
 
 // 
@@ -61,17 +61,17 @@ while counttype 0xef3 'any' 'backpack' >= 5
     //
     if @findtype 0xfc0 'any' 'backpack'
         useobject 'found'
-	pause 100
-	useobject 'found'
-	pause 100
-	useobject 'found'
-	pause 100
-	//
+        pause 100
+        useobject 'found'
+        pause 100
+        useobject 'found'
+        pause 100
+        //
         // Craft gump - spellbooks
         //
         waitforgump 0x38920abd 15000
-	replygump 0x38920abd 100
-	waitforgump 0x38920abd 15000
+        replygump 0x38920abd 100
+        waitforgump 0x38920abd 15000
         //
         // Seems short pause is needed here before gump can accept actions
         //
@@ -99,8 +99,10 @@ while counttype 0xef3 'any' 'backpack' >= 5
         if @injournal 'exceptional' 'system'
             moveitem 'found' 'Savebag'
             headmsg '*Exceptional*' 91
+            pause 1000
         else
             moveitem 'found' 'SellBag'
+            pause 1000
         endif
         @clearjournal
         @ignoreobject 'found'
