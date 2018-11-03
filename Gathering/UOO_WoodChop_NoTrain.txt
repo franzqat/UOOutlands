@@ -4,12 +4,19 @@
 //
 // * just chops wood, nothing else
 /////////////////////////////////////////////
+// v1.0
+// * first release
+//
+// v1.1
+// * extended pause after unequip
+//
+
 
 //
 // Clear hands
 //
 clearhands 'both'
-pause 1000
+pause 2000
 
 //
 // Create Messages list

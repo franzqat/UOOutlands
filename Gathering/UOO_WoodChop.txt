@@ -30,6 +30,11 @@
 //
 // * fixed launch kindling issue with saws
 //
+// v1.4
+//
+// * Removed dagger use to make kindling (was wasteful)
+//   Just use saws or dont do it at all
+//
 // [IMPORTANT! Make sure your wood craft source wood is 'Regular']
 //
 /////////////////////////////////////////////
@@ -141,18 +146,6 @@ while hits > 0
                     replygump 0x38920abd 0
                     pause 1000
                 endif
-            endif
-        endif
-
-        //
-        // Backup kindling method : dagger
-        //
-        if counttype 0xde1 '0' 'backpack' < 1
-            if @findtype 0xf52 'any' 'backpack'
-                useobject 'found'
-                waitfortarget 5000
-                target! 'self'
-                pause 500
             endif
         endif
 
