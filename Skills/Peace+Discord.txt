@@ -49,7 +49,6 @@ while hits > 0
     for 0 to 'instrumentlist'
         @findtype instrumentlist[]
         @setalias 'instrument' 'found'
-        sysmsg "1"
     endfor
 
     //
