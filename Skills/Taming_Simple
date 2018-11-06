@@ -1,0 +1,98 @@
+/////////////////////////////////////////////
+// UO Steam Taming Macro
+// for Outlands
+//
+// v1.0
+// ----
+// * Initial version
+//
+// Notes:
+// Server lag is really causing issues with releasing
+// - it sometimes just never responds. So be prepared
+//   to manually release.
+/////////////////////////////////////////////
+
+if not listexists 'Name' 
+    createlist 'Name' 
+    pushlist 'Name' 'MyPetName' 
+endif 
+
+//
+// You will constantly be updating this list, just re-create every time
+//
+removelist 'tameables'
+createlist 'tameables' 
+
+pushlist 'tameables' 0x6 //Raven
+pushlist 'tameables' 0x27 //Mongbat
+pushlist 'tameables' 0xd7 //Giant Rat
+pushlist 'tameables' 0x50 //Colossal Frog
+pushlist 'tameables' 0xdd //Walrus
+
+if not @inrange 'tobetamed' 2
+    @unsetalias 'tobetamed' 
+    for 0 in 'tameables' 
+        if @findtype tameables[] 'any' 'ground' 1 2 
+            @setalias 'tobetamed' 'found' 
+            break 
+        endif 
+    endfor 
+endif 
+
+if not @inrange 'tobetamed' 2 
+  headmsg 'Looking...' 91
+  pause 2000
+  replay 
+endif 
+
+
+while name 'tobetamed' != Name[0] 
+
+    autotargetobject 'tobetamed' 
+    useskill 'animal taming' 
+    pause 6000
+
+    // server lag is making renaming very hard
+    @rename 'tobetamed' Name[0] 
+    pause 3000 
+    if not @inrange 'tobetamed' 1 
+        if @x 'tobetamed' > x 'self' and @y 'tobetamed' > y 'self' 
+            walk 'Southeast' 
+        elseif @x 'tobetamed' < x 'self' and @y 'tobetamed' > y 'self' 
+            walk 'Southwest' 
+        elseif @x 'tobetamed' > x 'self' and @y 'tobetamed' < y 'self' 
+            walk 'Northeast' 
+        elseif @x 'tobetamed' < x 'self' and @y 'tobetamed' < y 'self' 
+            walk 'Northwest' 
+        elseif @x 'tobetamed' > x 'self' and @y 'tobetamed' == y 'self' 
+            walk 'East' 
+        elseif @x 'tobetamed' < x 'self' and @y 'tobetamed' == y 'self' 
+            walk 'West' 
+        elseif @x 'tobetamed' == x 'self' and @y 'tobetamed' > y 'self' 
+            walk 'South' 
+        elseif @x 'tobetamed' == x 'self' and @y 'tobetamed' < y 'self' 
+            walk 'North' 
+        endif 
+    endif
+
+    //
+    // Player left tame attempt
+    //
+    if not @inrange 'tobetamed' 3
+        headmsg "you moved too far" 44
+        @ignoreobject 'tobetamed' 
+        @unsetalias 'tobetamed' 
+        replay
+    endif
+
+endwhile 
+
+pause 2000
+sysmsg "releasing"
+waitforcontext 0x19ad7 10 5000
+waitforgump 0x909cc741 5000
+replygump 0x909cc741 1
+@ignoreobject 'tobetamed' 
+@unsetalias 'tobetamed' 
+
+replay
