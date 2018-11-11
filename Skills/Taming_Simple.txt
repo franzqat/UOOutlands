@@ -2,20 +2,22 @@
 // UO Steam Taming Macro
 // for Outlands
 //
+// This is a good script if you know you want to tame a certain mob - and will be where it spawns.
+// You just run it while sitting in the spawn area or run it while walking around. Feel free to change
+// the name of your tameable (search replace 'Ozy' with 'YourName').
+//
+// There is no way to tell if something is already tamed - if you are near other tamers :( So just
+// walk away from that tame and the script will pick up the the next one.
+//
 // v1.0
 // ----
 // * Initial version
 //
-// Notes:
-// Server lag is really causing issues with releasing
-// - it sometimes just never responds. So be prepared
-//   to manually release.
+// v2.0
+// ----
+// * using msg release - its much more reliable.
+//
 /////////////////////////////////////////////
-
-if not listexists 'Name' 
-    createlist 'Name' 
-    pushlist 'Name' 'MyPetName' 
-endif 
 
 //
 // You will constantly be updating this list, just re-create every time
@@ -40,21 +42,18 @@ if not @inrange 'tobetamed' 2
 endif 
 
 if not @inrange 'tobetamed' 2 
-  headmsg 'Looking...' 91
-  pause 2000
-  replay 
+    headmsg 'Looking...' 91
+    pause 2000
+    replay 
 endif 
 
-
-while name 'tobetamed' != Name[0] 
+while name 'tobetamed' != 'Ozy'
 
     autotargetobject 'tobetamed' 
     useskill 'animal taming' 
     pause 6000
-
-    // server lag is making renaming very hard
-    @rename 'tobetamed' Name[0] 
-    pause 3000 
+    @rename 'tobetamed' 'Ozy' 
+    pause 1000 
     if not @inrange 'tobetamed' 1 
         if @x 'tobetamed' > x 'self' and @y 'tobetamed' > y 'self' 
             walk 'Southeast' 
@@ -87,12 +86,11 @@ while name 'tobetamed' != Name[0]
 
 endwhile 
 
-pause 2000
-sysmsg "releasing"
-waitforcontext 0x19ad7 10 5000
+msg 'Ozy Release'
 waitforgump 0x909cc741 5000
 replygump 0x909cc741 1
-@ignoreobject 'tobetamed' 
-@unsetalias 'tobetamed' 
+@ignoreobject 'tobetamed'
+@unsetalias 'tobetamed'
 
+pause 1000
 replay
