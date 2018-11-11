@@ -18,6 +18,14 @@
 //
 // Start in PEACE mode. The War mode toggle is to get you out of attacking your own pet.
 //
+// IMPORTANT!
+// ----------
+// 70 ping - will work as is.
+// 150+ ping - add an extra walk in each direction.
+// 200+ ping - change walk to run.
+//
+// It will work for you - just need to tune it to your connection and game speed.
+//
 // v1.0
 // ----
 // * Initial version
