@@ -1,0 +1,86 @@
+/////////////////////////////////////////////
+// UO Steam Taming Macro
+// for Outlands
+//
+// This is a "circle" taming script because it walks you in a circle around
+// an aggressive tame, keeping you just out of harms way. To use it,
+// start with the mob coming at you from a south-southwest direction (aka your left).
+//
+// To get an idea of the circle it runs, just run it and target yourself.
+//
+// Each taming attempt occurs at the "top" of the circle - so it will be normal to run
+//
+// Why attack the creature? The tames seem to lose interest following you after a while
+// so you need to attack them to keep them interested in following :)
+//
+// How much room do you need? Not much - only about a 10x10 square; but lag and server saves
+// will screw up the path a bit - so it ends up being a little larger.
+//
+// Start in PEACE mode. The War mode toggle is to get you out of attacking your own pet.
+//
+// v1.0
+// ----
+// * Initial version
+//
+/////////////////////////////////////////////
+headmsg "Select creature to tame" 55
+promptalias 'tobetamed'
+if @findobject 'tobetamed'
+  while name 'tobetamed' != 'Ozy'
+    autotargetobject 'tobetamed'
+    useskill 'animal taming'
+    turn "Northeast"
+    walk "Northeast"
+    walk "Northeast"
+    walk "Northeast"
+    walk "Northeast"
+    turn "East"
+    walk "East"
+    walk "East"
+    walk "East"
+    walk "East"
+    turn "Southeast"
+    walk "Southeast"
+    walk "Southeast"
+    walk "Southeast"
+    walk "Southeast"
+    turn "South"
+    walk "South"
+    walk "South"
+    walk "South"
+    walk "South"
+    turn "Southwest"
+    walk "Southwest"
+    walk "Southwest"
+    walk "Southwest"
+    walk "Southwest"
+    turn "West"
+    walk "West"
+    walk "West"
+    walk "West"
+    walk "West"
+    turn "Northwest"
+    walk "Northwest"
+    walk "Northwest"
+    walk "Northwest"
+    walk "Northwest"
+    turn "North"
+    walk "North"
+    walk "North"
+    walk "North"
+    walk "North"
+    turn "Northeast"
+    pause 100
+    attack! 'tobetamed'
+    pause 100
+    warmode 'on'
+    pause 100
+    @rename 'tobetamed' 'Ozy'
+    pause 100
+    warmode 'off'
+    pause 100
+  endwhile
+  msg 'all follow me'
+  @ignoreobject 'tobetamed'
+  @unsetalias 'tobetamed'
+endif
