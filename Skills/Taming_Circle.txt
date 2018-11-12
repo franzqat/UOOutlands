@@ -38,6 +38,7 @@ if @findobject 'tobetamed'
     walk "Northeast"
     walk "Northeast"
     walk "Northeast"
+    run "East"
     walk "East"
     walk "East"
     walk "East"
