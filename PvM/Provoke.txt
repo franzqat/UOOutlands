@@ -21,7 +21,7 @@
 //
 // Create instrument
 //
-removelist 'instrumentlist'
+@removelist 'instrumentlist'
 @createlist 'instrumentlist'
 @pushlist 'instrumentlist' 0xeb1
 @pushlist 'instrumentlist' 0xeb2
@@ -55,16 +55,16 @@ endif
 // Run search loop for all mobs and insert into list
 // This is a 1 second scan of everything around player
 // 
-removetimer 'search'
-createtimer 'search'
+@removetimer 'search'
+@createtimer 'search'
 @removelist 'targets'
 @createlist 'targets'
 while timer 'search' < 1000
 	@unsetalias 'enemy'
-	@getenemy 'gray'
+	@getenemy 'enemy' 'gray' 'criminal'
 	@pushlist! 'targets' 'enemy'
 endwhile
-removetimer 'search'
+@removetimer 'search'
 
 //
 // Check to make sure we got enough targets
@@ -89,8 +89,6 @@ pushlist 'distances' 7
 pushlist 'distances' 8
 pushlist 'distances' 9
 pushlist 'distances' 10
-pushlist 'distances' 11
-pushlist 'distances' 12
 
 //
 // Sort the mobs we found by distance
@@ -102,7 +100,6 @@ for 0 to 'distances'
 	for 0 to 'targets'
 		if @findobject targets[] 0 0 0 distances[]
 		  	@pushlist! 'mobs' targets[]
-		  	@poplist 'targets' targets[]
 		endif
 	endfor
 endfor
