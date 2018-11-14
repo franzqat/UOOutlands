@@ -114,4 +114,7 @@ if list 'mobs' > 1
     @target mobs[0]
     waitfortarget 5000
     @target mobs[1]
+    pause 11000
 endif
+
+pause 1000
