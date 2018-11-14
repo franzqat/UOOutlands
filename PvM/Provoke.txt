@@ -89,8 +89,8 @@ pushlist 'distances' 7
 pushlist 'distances' 8
 pushlist 'distances' 9
 pushlist 'distances' 10
-
-sysmsg "sort"
+pushlist 'distances' 11
+pushlist 'distances' 12
 
 //
 // Sort the mobs we found by distance
