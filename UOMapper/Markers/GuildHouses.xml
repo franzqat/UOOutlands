@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Pack Name="Guild Houses" Revision="0">
+	<Marker Name="Jewele's House" X="1236" Y="2863" Icon="GH" Facet="0"/>
+	<Marker Name="Axiom's House" X="1330" Y="2037" Icon="GH" Facet="0"/>
+	<Marker Name="Fuschinos's House" X="1362" Y="2356" Icon="GH" Facet="0"/>
+	<Marker Name="Troy's House" X="3304" Y="3729" Icon="GH" Facet="0"/>
+	<Marker Name="Harald's House" X="1838" Y="838" Icon="GH" Facet="0"/>
+</Pack>
