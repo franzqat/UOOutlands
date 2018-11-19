@@ -22,8 +22,13 @@
 //   find bandages after using gate if your backpack
 //   is not open.
 //
+// v1.4
+// - Cancels existing targets and queue
+//
 /////////////////////////////////////////////
 sysmsg "Bandage script active" 67
+@canceltarget
+@cleartargetqueue
 //
 // Open pack (forces bandage inventory)
 //

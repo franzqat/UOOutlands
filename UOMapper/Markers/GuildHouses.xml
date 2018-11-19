@@ -5,4 +5,15 @@
 	<Marker Name="Fuschinos's House" X="1362" Y="2356" Icon="GH" Facet="0"/>
 	<Marker Name="Troy's House" X="3304" Y="3729" Icon="GH" Facet="0"/>
 	<Marker Name="Harald's House" X="1838" Y="838" Icon="GH" Facet="0"/>
+	<Marker Name="SnugglePuss' House" X="1282" Y="2266" Icon="GH" Facet="0"/>
+	<Marker Name="Sir Arch' House" X="731" Y="1194" Icon="GH" Facet="0"/>
+	<Marker Name="PVPeter's House" X="752" Y="1206" Icon="GH" Facet="0"/>
+	<Marker Name="Brad's House" X="2918" Y="560" Icon="GH" Facet="0"/>
+	<Marker Name="SilverWolfe's House" X="1752" Y="731" Icon="GH" Facet="0"/>
+	<Marker Name="Mary's House" X="1755" Y="745" Icon="GH" Facet="0"/>
+	<Marker Name="Nekronos' House" X="2627" Y="485" Icon="GH" Facet="0"/>
+	<Marker Name="Guild House" X="1784" Y="725" Icon="MGH" Facet="0"/>
+	<Marker Name="Terran House" X="880" Y="1564" Icon="GH" Facet="0"/>
+	<Marker Name="Prevalia House" X="1480" Y="1473" Icon="GH" Facet="0"/>
+	<Marker Name="Cambria House" X="1677" Y="3153" Icon="GH" Facet="0"/>
 </Pack>
