@@ -14,6 +14,7 @@ headmsg "Select creature to tame" 55
 promptalias 'tobetamed'
 if @findobject 'tobetamed'
   while name 'tobetamed' != 'Ozy'
+  	@setskill 'animal taming' 'up'
     autotargetobject 'tobetamed'
     useskill 'animal taming'
     pause 13000

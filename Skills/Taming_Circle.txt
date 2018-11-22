@@ -31,6 +31,7 @@ promptalias 'tobetamed'
 if @findobject 'tobetamed'
   while name 'tobetamed' != 'Ozy'
     autotargetobject 'tobetamed'
+    @setskill 'animal taming' 'up'
     useskill 'animal taming'
     run "Northeast"
     walk "Northeast"

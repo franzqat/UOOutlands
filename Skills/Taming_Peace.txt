@@ -35,6 +35,7 @@ if @findobject 'tobetamed'
     //
     // Tame
     //
+    @setskill 'animal taming' 'up'
     autotargetobject 'tobetamed'
     useskill 'animal taming'
     pause 13000
