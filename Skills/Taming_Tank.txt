@@ -39,7 +39,7 @@ if @findobject 'tobetamed'
     target! 'pet'
     pause 5000
     @rename 'tobetamed' 'Ozy'
-    pause 2000
+    pause 2500
   endwhile
   @ignoreobject 'tobetamed'
   @unsetalias 'tobetamed'
