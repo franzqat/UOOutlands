@@ -9,38 +9,76 @@
 // ----
 // * Initial version
 //
+// v1.1
+// ----
+// * Rewrote script to avoid fixed vet timers
+//
 /////////////////////////////////////////////
+sysmsg "Taming Tank script" 67
 headmsg "Select creature to tame" 55
 promptalias 'tobetamed'
 headmsg "Select pet" 55
 promptalias 'pet'
+
+//
+// Timers
+//
+@createtimer 'tame'
+@settimer 'tame' 12000
+@clearjournal
 if @findobject 'tobetamed'
-  while name 'tobetamed' != 'Ozy'
-    @setskill 'animal taming' 'up'
-    useskill 'animal taming'
-    waitfortarget 5000
-    target! 'tobetamed'
-    if counttype '0xe21' 'any' 'backpack' == 0
-      sysmsg "No bandages!" 38
-      stop
-    endif
     //
-    // heal
+    // tame success check
     //
-    @usetype '0xe21' 'any' 'backpack'
-    waitfortarget 5000
-    target! 'pet'
-    pause 5000
-    //
-    // heal
-    //
-    @usetype '0xe21' 'any' 'backpack'
-    waitfortarget 5000
-    target! 'pet'
-    pause 5000
-    @rename 'tobetamed' 'Ozy'
-    pause 2500
-  endwhile
-  @ignoreobject 'tobetamed'
-  @unsetalias 'tobetamed'
+    while name 'tobetamed' != 'Ozy'
+        //
+        // tame
+        //
+        if timer 'tame' > 11000
+            @setskill 'animal taming' 'up'
+            useskill 'animal taming'
+            waitfortarget 5000
+            target! 'tobetamed'
+            settimer 'tame' 0
+        endif
+        //
+        // bandage check
+        //
+        if counttype '0xe21' 'any' 'backpack' == 0
+          sysmsg "No bandages!" 38
+          stop
+        endif
+        //
+        // cured pet
+        // 
+        if @injournal 'cure' 'system'
+            @removetimer 'vet'
+        endif
+        //
+        // finished bandage
+        // 
+        if @injournal 'finish' 'system'
+            @removetimer 'vet'
+        endif
+        //
+        // timer went too long
+        // 
+        if timer 'vet' > 8000
+            @removetimer 'vet'
+        endif
+        //
+        // vet check or bandage
+        //
+        if not timer exists 'vet'
+            @usetype '0xe21' 'any' 'backpack'
+            waitfortarget 5000
+            target! 'pet'
+            @createtimer 'vet'
+        endif
+        //
+        // try rename
+        //
+        @rename 'tobetamed' 'Ozy'
+        pause 500
+    endwhile
 endif
