@@ -34,10 +34,12 @@
 	<Marker Name="Silverback's House" X="2242" Y="3324" Icon="GHS" Facet="0"/>
 	<Marker Name="SilverWolfe's House" X="1752" Y="731" Icon="GH" Facet="0"/>
 	<Marker Name="Sir Arch' House" X="731" Y="1194" Icon="GH" Facet="0"/>
+	<Marker Name="Slick's" X="880" Y="3045" Icon="GH" Facet="0"/>
 	<Marker Name="SnugglePuss Houses" X="1282" Y="2266" Icon="GH" Facet="0"/>
 	<Marker Name="Terran Gate" X="880" Y="1564" Icon="GH" Facet="0"/>
 	<Marker Name="Texmex/Precox House" X="1010" Y="689" Icon="GH" Facet="0"/>
-	<Marker Name="Toot's House" X="2170" Y="488" Icon="GH" Facet="0"/>
+	<Marker Name="Tant's House" X="951" Y="2855" Icon="GHS" Facet="0"/>
+	<Marker Name="Toots' House" X="2170" Y="488" Icon="GH" Facet="0"/>
 	<Marker Name="Troy's House" X="3304" Y="3729" Icon="GH" Facet="0"/>
 	<Marker Name="Yoink's House" X="285" Y="1795" Icon="GH" Facet="0"/>
 </Pack>
