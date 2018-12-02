@@ -74,6 +74,9 @@
 // -----------
 // First release! yay!
 //
+// Version 1.1
+// -----------
+// Added cancel target after trying to kill a bird
 //
 // UOSTEAM COPY-PASTE BELOW THIS LINE
 /////////////////////////////////////////////
@@ -277,6 +280,7 @@ while not dead
             pushlist 'birds' '0x6'
             for 0 to 'birds'
                 if @findtype birds[] 'any' 'ground' 12
+                    @canceltarget
                     cast 'Lightning'
                     waitfortarget 5000
                     target! 'found'
