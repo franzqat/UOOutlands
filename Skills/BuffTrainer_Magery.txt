@@ -67,6 +67,12 @@
 // ---------------
 // PM me directly, I'd love to help you :)
 //
+// Version 1.0
+// -----------
+// First release! yay!
+//
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
 /////////////////////////////////////////////
 
 @useobject 'backpack'
