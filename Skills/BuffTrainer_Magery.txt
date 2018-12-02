@@ -1,0 +1,287 @@
+/////////////////////////////////////////////
+// UO Steam Recall Skill Buff Trainer
+// for Outlands
+// by Jewele
+// 
+// !MINOC SYNDICATE ONLY!
+//
+// Recalls you to a marked location to kill a bird,
+// back to a marked training spot, trains, and 
+// when needed, recalls you to a marked bank rune
+// to restock regs.
+// 
+// How to use?
+// -----------
+// 1) Mark a rune at a bank
+// 2) Mark a rune at a bird spawn
+// 3) Mark a rune where you want to train
+// 4) Start at -bank-, with banker in sight
+// 5) Run script
+//
+// What regs does it restock?
+// --------------------------
+// It only restocks the regs needed to recall
+// and lightning birds. If you need regs to train 
+// with - please put them in your pack first.
+//
+// What skill do I need to recall?
+// -------------------------------
+// 65 magery
+//
+// Something got messed up!
+// ------------------------
+// Paste this into a new script, run once:
+//  unsetalias 'bankrune'
+//  unsetalias 'birdrune'
+//  unsetalias 'trainrune'
+//  unsetalias 'bankbag'
+//  unsetalias 'banker'
+//
+// Training
+// ---------------
+// Restrict your training to 1 action!
+// (1 spell, 1 bandage, 1 whatever)
+//
+// Troubleshooting
+// ---------------
+// * Make sure the reagents in your bankbag are
+//   properly stacked into a SINGLE stack. A stack
+//   of 5 Root and 300 Root will mess up script.
+// * Make sure you have root, pearl, moss and ash 
+//   in your bank bag for transfer. Dont just store all
+//   this in your pack - the script wants to transfer it.
+//
+// All birds dead?
+// ---------------
+// Script will wait until one spawns.
+//
+// My <insert reagent> isnt restocking properly
+// --------------------------------------------
+// Ive seen this many times, and no amount of 
+// repeated actions can fix it. It just gets in a
+// bad state. To fix, remove all reagents from your
+// pack manually. Then put back what you need for
+// training. Then run again.
+//
+// Im still stuck!
+// ---------------
+// PM me directly, I'd love to help you :)
+//
+/////////////////////////////////////////////
+
+@useobject 'backpack'
+pause 1000
+
+if not findalias 'bankrune'
+    sysmsg "Select rune for bank access"
+    promptalias 'bankrune'
+endif
+if not findalias 'birdrune'
+    sysmsg "Select rune for bird killing"
+    promptalias 'birdrune'
+endif
+if not findalias 'trainrune'
+    sysmsg "Select rune for training location"
+    promptalias 'trainrune'
+endif
+if not findalias 'bankbag'
+    msg "bank"
+    pause 1000
+    sysmsg "Select a bag with reagents in your bank"
+    promptalias 'bankbag'
+endif
+if not findalias 'banker'
+    sysmsg "Select the banker at your bank"
+    promptalias 'banker'
+endif
+
+//
+// Actions list
+//
+@removelist 'actions'
+@createlist 'actions'
+pushlist 'actions' 'restock'
+
+//
+// Birds
+//
+@removelist 'birds'
+@createlist 'birds'
+pushlist 'birds' '0x6'
+
+//
+// Recall regs
+// 
+@removelist 'regs'
+@createlist 'regs'
+pushlist 'regs' 0xf7a // pearl
+pushlist 'regs' 0xf7b // moss
+pushlist 'regs' 0xf86 // root
+pushlist 'regs' 0xf8c // ash
+
+msg "bank"
+pause 1000
+
+while not dead
+
+    // 
+    // Reg check
+    // 
+    if not @inlist! 'actions' 'restock'
+        for 0 to 'regs'
+            if @counttype regs[] 'any' 'backpack' < 5
+                @clearlist 'actions'
+                sysmsg "I need to restock regs" 44
+                pushlist 'actions' 'restock'
+                continue
+            endif
+        endfor
+    endif
+
+    //
+    // Restock for recall and lightning
+    //
+    if @inlist! 'actions' 'restock'
+        sysmsg "Restocking regs" 44
+        pause 200
+        @clearlist 'actions'
+        // check if we are at bank
+        if not inrange 'banker' 30
+            // mana to recall
+            while mana < 15
+                useskill 'meditation'
+                pause 6000
+            endwhile
+            // recall
+            cast "Recall"
+            waitfortarget 5000
+            target! 'bankrune'
+            pause 1000
+        endif
+
+        // check if we are at bank
+        if @inrange 'banker' 30
+            msg "bank"
+            resync
+            pause 2000
+            for 0 to 'regs'
+                movetype regs[] 'bankbag' 'backpack' 0 0 0 'any' 10
+                pause 1500
+                if counttype regs[] 'any' 'backpack' < 10
+                    sysmsg "Out of one or more required regs!"
+                    stop
+                endif
+            endfor
+            pushlist 'actions' 'recalltrain'    
+            continue
+        else
+            sysmsg "Either start at bank or start with regs in pack to recall to bank"
+            stop
+        endif
+    endif
+
+    // 
+    // Buff check
+    // 
+    if not @inlist! 'actions' 'buff'
+        if not buffexists 'Arcane Empowerment'
+            @clearlist 'actions'
+            sysmsg "I need to get my skill buff" 44
+            pushlist 'actions' 'buff'
+            continue
+        endif
+    endif
+
+    //
+    // Get buff
+    //
+    if @inlist! 'actions' 'buff'
+        sysmsg "Getting skill buff" 44
+        pause 200
+        @clearlist 'actions'
+        // mana to recall
+        while mana < 15
+            useskill 'meditation'
+            pause 6000
+        endwhile
+        // recall
+        cast "Recall"
+        waitfortarget 5000
+        target! 'birdrune'
+        pause 1000
+        // mana to cast lightning
+        while mana < 15
+            useskill 'meditation'
+            pause 6000
+        endwhile
+        // get buff
+        while not buffexists 'Arcane Empowerment'
+            sysmsg "Looking for a bird to kill"
+            removelist 'birds'
+            createlist 'birds'
+            pushlist 'birds' '0x6'
+            for 0 to 'birds'
+                if @findtype birds[] 'any' 'ground' 12
+                    cast 'Lightning'
+                    waitfortarget 5000
+                    target! 'found'
+                endif
+            endfor
+            pause 2000
+        endwhile
+        // mana to recall
+        while mana < 15
+            useskill 'meditation'
+            pause 6000
+        endwhile
+        @pushlist 'actions' 'recalltrain'
+        continue
+    endif
+
+    //
+    // Recall train
+    //
+    if @inlist! 'actions' 'recalltrain'
+        sysmsg "Heading to training spot" 44
+        pause 200
+        @clearlist 'actions'
+        // mana to recall
+        while mana < 15
+            useskill 'meditation'
+            pause 6000
+        endwhile
+        // recall
+        cast "Recall"
+        waitfortarget 5000
+        target! 'trainrune'
+        pushlist 'actions' 'train'  
+        continue
+    endif
+
+    // 
+    // Train
+    // 
+    if @inlist! 'actions' 'train'
+        pause 200
+        @clearlist 'actions'
+        //
+        // INSERT TRAINING SEQUENCE HERE
+        //
+        // START > 
+        if mana < 30
+            useskill 'meditation'
+            pause 11000
+        endif
+        if mana > 30
+            cast "invisibility"
+            waitfortarget 5000
+            target! 'self'
+        endif
+        msg "guards"
+        // < END
+        pushlist 'actions' 'train'
+    endif
+
+    pause 200
+
+endwhile
