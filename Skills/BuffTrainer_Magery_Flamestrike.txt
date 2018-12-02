@@ -217,7 +217,7 @@ while not dead
                 createtimer 'restock'
                 while counttype trainregs[] 'any' 'backpack' < 200
                     sysmsg "restocking reagent"
-                    movetype trainregs[] 'bankbag' 'backpack' 0 0 0 'any' 400
+                    movetype trainregs[] 'bankbag' 'backpack' 0 0 0 'any' 200
                     pause 1500
                     if timer 'restock' > 30000
                         sysmsg "I cannot restock the train regs"
