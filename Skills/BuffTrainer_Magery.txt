@@ -8,20 +8,23 @@
 // Recalls you to a marked location to kill a bird,
 // back to a marked training spot, trains, and 
 // when needed, recalls you to a marked bank rune
-// to restock regs.
+// to restock scriptregs.
 // 
 // How to use?
 // -----------
 // 1) Mark a rune at a bank
 // 2) Mark a rune at a bird spawn
 // 3) Mark a rune where you want to train
-// 4) Start at -bank-, with banker in sight
-// 5) Run script
+// 4) Place all 3 runes in your backpack
+// 5) Review 'trainregs' list below to make sure it matches
+//    the spells you are training with.
+// 6) Start at -bank-, with banker in sight
+// 7) Run script
 //
-// What regs does it restock?
+// What scriptregs does it restock?
 // --------------------------
-// It only restocks the regs needed to recall
-// and lightning birds. If you need regs to train 
+// It only restocks the scriptregs needed to recall
+// and lightning birds. If you need scriptregs to train 
 // with - please put them in your pack first.
 //
 // What skill do I need to recall?
@@ -116,14 +119,22 @@ pushlist 'actions' 'restock'
 pushlist 'birds' '0x6'
 
 //
-// Recall regs
+// Script Regs (stocks 10)
 // 
-@removelist 'regs'
-@createlist 'regs'
-pushlist 'regs' 0xf7a // pearl
-pushlist 'regs' 0xf7b // moss
-pushlist 'regs' 0xf86 // root
-pushlist 'regs' 0xf8c // ash
+@removelist 'scriptregs'
+@createlist 'scriptregs'
+pushlist 'scriptregs' 0xf7a // pearl
+pushlist 'scriptregs' 0xf7b // moss
+pushlist 'scriptregs' 0xf86 // root
+pushlist 'scriptregs' 0xf8c // ash
+
+//
+// Train Regs (stocks 200)
+// 
+@removelist 'trainregs'
+@createlist 'trainregs'
+pushlist 'trainregs' 0xf88 // shade
+pushlist 'trainregs' 0xf7b // moss
 
 msg "bank"
 pause 1000
@@ -134,10 +145,20 @@ while not dead
     // Reg check
     // 
     if not @inlist! 'actions' 'restock'
-        for 0 to 'regs'
-            if @counttype regs[] 'any' 'backpack' < 5
+        // script regs
+        for 0 to 'scriptregs'
+            if @counttype scriptregs[] 'any' 'backpack' < 5
                 @clearlist 'actions'
-                sysmsg "I need to restock regs" 44
+                sysmsg "I need to restock scriptregs" 44
+                pushlist 'actions' 'restock'
+                continue
+            endif
+        endfor
+        // train regs
+        for 0 to 'trainregs'
+            if @counttype trainregs[] 'any' 'backpack' < 10
+                @clearlist 'actions'
+                sysmsg "I need to restock trainregs" 44
                 pushlist 'actions' 'restock'
                 continue
             endif
@@ -145,7 +166,7 @@ while not dead
     endif
 
     //
-    // Restock for recall and lightning
+    // Restock regs
     //
     if @inlist! 'actions' 'restock'
         sysmsg "Restocking regs" 44
@@ -170,18 +191,41 @@ while not dead
             msg "bank"
             resync
             pause 2000
-            for 0 to 'regs'
-                movetype regs[] 'bankbag' 'backpack' 0 0 0 'any' 10
-                pause 1500
-                if counttype regs[] 'any' 'backpack' < 10
-                    sysmsg "Out of one or more required regs!"
-                    stop
-                endif
+            @useobject 'bankbag'
+            pause 2000
+            //
+            // Reg restocking is extremely unreliable!
+            //
+            for 0 to 'scriptregs'
+                removetimer 'restock'
+                createtimer 'restock'
+                while counttype scriptregs[] 'any' 'backpack' < 10
+                    sysmsg "restocking reagent"
+                    movetype scriptregs[] 'bankbag' 'backpack' 0 0 0 'any' 10
+                    pause 1500
+                    if timer 'restock' > 30000
+                        sysmsg "I cannot restock the script regs"
+                        stop
+                    endif
+                endwhile
+            endfor
+            for 0 to 'trainregs'
+                removetimer 'restock'
+                createtimer 'restock'
+                while counttype trainregs[] 'any' 'backpack' < 200
+                    sysmsg "restocking reagent"
+                    movetype trainregs[] 'bankbag' 'backpack' 0 0 0 'any' 200
+                    pause 1500
+                    if timer 'restock' > 30000
+                        sysmsg "I cannot restock the train regs"
+                        stop
+                    endif
+                endwhile
             endfor
             pushlist 'actions' 'recalltrain'    
             continue
         else
-            sysmsg "Either start at bank or start with regs in pack to recall to bank"
+            sysmsg "Either start at bank or start with scriptregs in pack to recall to bank"
             stop
         endif
     endif
