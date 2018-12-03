@@ -78,6 +78,10 @@
 // -----------
 // Added cancel target after trying to kill a bird
 //
+// Version 1.2
+// -----------
+// Will ignore a bird it cant kill
+//
 // UOSTEAM COPY-PASTE BELOW THIS LINE
 /////////////////////////////////////////////
 
@@ -284,6 +288,7 @@ while not dead
                     cast 'Lightning'
                     waitfortarget 5000
                     target! 'found'
+                    @ignoreobject 'found'
                 endif
             endfor
             pause 2000

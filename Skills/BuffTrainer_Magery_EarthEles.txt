@@ -10,10 +10,6 @@
 // when needed, recalls you to a marked bank rune
 // to restock scriptregs.
 //
-// This is the FLAMESTRIKE version. Make sure you mark
-// a rune to the Prevalia zoo and check the serial of the
-// mob u want to nuke.
-// 
 // How to use?
 // -----------
 // 1) Mark a rune at a bank
@@ -81,6 +77,10 @@
 // Version 1.1
 // -----------
 // Added cancel target after trying to kill a bird
+//
+// Version 1.2
+// -----------
+// Will ignore a bird it cant kill
 //
 // UOSTEAM COPY-PASTE BELOW THIS LINE
 /////////////////////////////////////////////
@@ -284,6 +284,7 @@ while not dead
                     cast 'Lightning'
                     waitfortarget 5000
                     target! 'found'
+                    @ignoreobject 'found'
                 endif
             endfor
             pause 2000
