@@ -10,10 +10,6 @@
 // when needed, recalls you to a marked bank rune
 // to restock scriptregs.
 //
-// This is the FLAMESTRIKE version. Make sure you mark
-// a rune to the Prevalia zoo and check the serial of the
-// mob u want to nuke.
-// 
 // How to use?
 // -----------
 // 1) Mark a rune at a bank
