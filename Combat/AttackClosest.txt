@@ -23,9 +23,9 @@
 @removelist 'found'
 @createlist 'found'
 while timer 'search' < 1000
-	@unsetalias 'enemy'
-	@getenemy 'enemy' 'gray' 'criminal' next
-	@pushlist! 'found' 'enemy'
+    @unsetalias 'enemy'
+    @getenemy 'enemy' 'gray' 'criminal' next
+    @pushlist! 'found' 'enemy'
 endwhile
 @removetimer 'search'
 
@@ -53,27 +53,25 @@ pushlist 'distances' 15
 //
 // Sort by distance
 // with closest first
-//	
+//  
 @removelist 'targets'
 @createlist 'targets'
 for 0 to 'distances'
-	for 0 to 'found'
-		if @findobject found[] 0 0 0 distances[]
-		  	@pushlist! 'targets' found[]
-		endif
-	endfor
+    for 0 to 'found'
+        if @findobject found[] 0 0 0 distances[]
+            @pushlist! 'targets' found[]
+        endif
+    endfor
 endfor
 
 //
 // Attack if we see targets
 //
 if list 'targets' > 1
-	headmsg "*Attacking*" 22
-	setalias 'enemy' targets[0]
-	warmode 'on'
-	attack! targets[0]
+    headmsg "*Attacking*" 22
+    setalias 'enemy' targets[0]
+    warmode 'on'
+    attack! targets[0]
 else
-	headmsg "No targets" 44
+    headmsg "No targets" 44
 endif
-
-pause 1000
