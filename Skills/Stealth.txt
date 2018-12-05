@@ -2,40 +2,13 @@
 // UO Steam Stealth Training Macro
 // for Outlands
 //
-// A lot of people don't know that moving while
-// stealthed actually passively raises it! Hence
-// the macro will walk you back and forth a bit
-// to raise, once hidden.
-//
-// Position yourself against a wall North and run.
-//
-// One stealth starts increasing you want to equip armor
-// - more and more as the skill increases.
-// 65 – 95 Leather/Studded suit pieces
-// 95 – 100  Full Studded Leather Suit + Close Helm
-//
 /////////////////////////////////////////////
-// Create hiding timer
-removetimer 'hiding'
-createtimer 'hiding'
-// run in loop
 while not dead
-  useskill 'hiding'
-  settimer 'hiding' 0
-  pause 500
-  // can stealth
-  if hidden 'self' and skill 'hiding' >= 80
-    walk "South"
-    walk "South"
-    walk "South"
-    walk "South"
-    walk "North"
-    walk "North"
-    walk "North"
-    walk "North"
+  if not hidden
+    useskill "hiding"
+    pause 11000
+    continue
   endif
-  // need to wait 11 seconds since last hide attempt
-  while timer 'hiding' < 11000
-    pause 100
-  endwhile
+  useskill "stealth"
+  pause 11000
 endwhile
