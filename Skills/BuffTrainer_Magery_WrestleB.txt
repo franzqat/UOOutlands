@@ -1,0 +1,6 @@
+warmode 'off'
+if diffhits > 10
+  bandageself
+  pause 20000
+endif
+pause 1000
