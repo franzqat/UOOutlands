@@ -43,11 +43,15 @@
 // -----------
 // Bumped recall regs to 50
 //
+// Version 1.6
+// -----------
+// Will now check bird flag before killing
+//
 // UOSTEAM COPY-PASTE BELOW THIS LINE
 /////////////////////////////////////////////
 
 sysmsg "Buff Trainer Script - Herding" 88
-sysmsg "Version 1.4" 88
+sysmsg "Version 1.6" 88
 
 @useobject 'backpack'
 pause 1000
@@ -77,13 +81,6 @@ endif
 @removelist 'actions'
 @createlist 'actions'
 pushlist 'actions' 'restock'
-
-//
-// Birds
-//
-@removelist 'birds'
-@createlist 'birds'
-pushlist 'birds' '0x6'
 
 //
 // Script Regs (stocks 10)
@@ -207,19 +204,15 @@ while not dead
         endwhile
         // get buff
         while not buffexists 'Arcane Empowerment'
-            sysmsg "Looking for a bird to kill"
-            removelist 'birds'
-            createlist 'birds'
-            pushlist 'birds' '0x6'
-            for 0 to 'birds'
-                if @findtype birds[] 'any' 'ground' 12
+            @getenemy 'enemy' 'gray' 'criminal' next
+            if @inrange 'enemy' 12
+                if graphic 'enemy' == '0x6'
                     @canceltarget
                     cast 'Lightning'
                     waitfortarget 5000
-                    target! 'found'
-                    @ignoreobject 'found'
+                    target! 'enemy'
                 endif
-            endfor
+            endif
             pause 2000
         endwhile
         // mana to recall
