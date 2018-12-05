@@ -70,7 +70,9 @@ endfor
 if list 'targets' > 1
     headmsg "*Attacking*" 22
     setalias 'enemy' targets[0]
-    warmode 'on'
+    if not war 'self'
+      warmode 'on'
+    endif
     attack! targets[0]
 else
     headmsg "No targets" 44
