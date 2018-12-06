@@ -234,33 +234,33 @@ while not dead
         // INSERT TRAINING SEQUENCE HERE
         //
         // START > 
-		//
-		// Check we have kindling
-		//
-		if not @findtype '0xde1' 'any' 'backpack'
-			headmsg 'No kindling!' '55' 'self'
-			stop
-		endif
-		@clearjournal
-		//
-		// Use kindling
-		//
-		@findtype '0xde1' 'any' 'backpack'
-		@useobject 'found'
-		removetimer 'camp'
-		createtimer 'camp'
-		while timer 'camp' < 35000
-			// Skip out on failure
-			if @injournal 'fail to ignite' 'system'
-				// 5s required to start a new fire
-				pause 5000
-				break
-			endif
-			if @injournal 'secure' 'system'
-				break
-			endif
-			pause 1000
-		endwhile
+        //
+        // Check we have kindling
+        //
+        if not @findtype '0xde1' 'any' 'backpack'
+            headmsg 'No kindling!' '55' 'self'
+            stop
+        endif
+        @clearjournal
+        //
+        // Use kindling
+        //
+        @findtype '0xde1' 'any' 'backpack'
+        @useobject 'found'
+        removetimer 'camp'
+        createtimer 'camp'
+        while timer 'camp' < 35000
+            // Skip out on failure
+            if @injournal 'fail to ignite' 'system'
+                // 5s required to start a new fire
+                pause 5000
+                break
+            endif
+            if @injournal 'secure' 'system'
+                break
+            endif
+            pause 1000
+        endwhile
 
         // < END
         pushlist 'actions' 'train'
