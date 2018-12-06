@@ -96,6 +96,7 @@ pushlist 'actions' 'restock'
 pushlist 'scriptregs' 0xf7a // pearl
 pushlist 'scriptregs' 0xf7b // moss
 pushlist 'scriptregs' 0xf86 // root
+pushlist 'scriptregs' 0xf8c // ash
 
 //
 // Arrows/Bolts (stocks 500)
@@ -138,7 +139,7 @@ while not dead
     // Restock regs
     //
     if @inlist! 'actions' 'restock'
-        sysmsg "Checking / restocking regs" 88
+        sysmsg "Checking / restocking regs and ammo" 88
         pause 200
         @clearlist 'actions'
         // check if we are at bank
@@ -242,8 +243,9 @@ while not dead
             if @inrange 'enemy' 12
                 if graphic 'enemy' == '0x6'
                     @canceltarget
-                    attack! 'enemy'
-                    pause 2000
+                    cast 'Lightning'
+                    waitfortarget 5000
+                    target! 'enemy'
                 endif
             endif
             pause 2000
@@ -289,6 +291,14 @@ while not dead
         // INSERT TRAINING SEQUENCE HERE
         //
         // START > 
+        // arm bow/crossbow
+        if not @findlayer 'self' 1
+            @findtype 0x13b2 'any' 'backpack'
+            @equipitem 'found' 1
+            @findtype 0xf50 'any' 'backpack'            
+            @equipitem 'found' 1
+            pause 1000
+        endif
         @canceltarget
         // anaconda
         attack! 0x380c9
