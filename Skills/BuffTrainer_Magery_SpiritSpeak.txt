@@ -50,7 +50,7 @@
 // UOSTEAM COPY-PASTE BELOW THIS LINE
 /////////////////////////////////////////////
 
-sysmsg "Buff Trainer Script - Camping" 88
+sysmsg "Buff Trainer Script - Spirit Speak" 88
 sysmsg "Version 1.6" 88
 
 @useobject 'backpack'
