@@ -50,11 +50,15 @@
 // -----------
 // Will now check bird flag before killing
 //
+// Version 1.7
+// -----------
+// Stops at 100 magery
+//
 // UOSTEAM COPY-PASTE BELOW THIS LINE
 /////////////////////////////////////////////
 
 sysmsg "Buff Trainer Script - Earth Elementals" 88
-sysmsg "Version 1.6" 88
+sysmsg "Version 1.7" 88
 
 @useobject 'backpack'
 pause 1000
@@ -114,6 +118,14 @@ msg "bank"
 pause 1000
 
 while not dead
+
+    // 
+    // Magery 100 check
+    //
+    if skill 'magery' == 100
+        headmsg "Im done! woohoo!"
+        stop
+    endif
 
     // 
     // Reg check
