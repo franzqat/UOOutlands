@@ -1,111 +1,152 @@
 /////////////////////////////////////////////
 // UO Steam Mining Macro
 // for Outlands
+//
+// * just mines ore, nothing else
+// * clicks ore in case you near forge
 // 
-// * equips pick and mines
-// * detects overweight
-// * if you have kindling it will attempt to camp
-// * weaves hiding into mining to level it up
-// * warns on 1 pick left
-// * emotes whistle every 20 seconds
+// Version 1.0
+// -----------
+// First release
+//
+// Version 1.1
+// -----------
+// Added PK detection and warnings. To use this
+// activate your tracking and set to [REDS]
+//
 /////////////////////////////////////////////
 
-// Create camping timer
-removetimer camping
-createtimer 'camping'
+sysmsg "UO Outlands Miner script" 88
+sysmsg "Version 1.1" 88
 
-// Create hiding timer
-removetimer 'hiding'
-createtimer 'hiding'
+@useobject 'backpack'
+pause 1000
 
-// Create whistle timer
+//
+// Clear hands
+//
+clearhands 'both'
+pause 1000
+
+//
+// Whistle timer
+// 
 removetimer 'whistle'
 createtimer 'whistle'
 
-// While we not overloaded
-while diffweight > 10
+//
+// Clear alias (possibly other macros)
+// 
+@unsetalias 'PickAxe'
 
-  //Check holding pickaxe
-  if not @findlayer 'self' 1
-    @unsetalias 'Pickaxe'
-  endif
+//
+// Create Messages list
+//
+@removelist 'Messages'
+@createlist 'Messages'
 
-  //Equip pickaxe or stop with msg
-  if not findalias 'Pickaxe'
-    if @findtype '0xe86' 'any' 'backpack'
-      @setalias 'Pickaxe' 'found'
-    else
-      headmsg 'No Pickaxes found!' '55' 'self'
-      stop
+//
+// While alive
+//
+while hits > 0
+
+    @clearjournal
+
+    //
+    // Check weight
+    // 
+    if diffweight < 10
+        headmsg 'I am too heavy, please unload me' '23'
+        pause 5000
+        continue    
     endif
-  endif
 
-  canceltarget
-  clearjournal
-
-  // Equip Pickaxe
-  if not @findlayer 'self' 1
-    equipitem 'Pickaxe' 2
-    pause 600
-  endif
-
-  if counttype '0xe86' 'any' 'backpack' == 1
-  	sysmsg "On last Pick!" 38
-  endif
-
-  // Use Pickaxe
-  useobject 'Pickaxe'
-  waitfortarget 15000
-  target! 'self'
-  pause 500
-
-  // Camp once every 3 seconds
-  if timer 'camping' > 3000
-    // Burn up the kindling once
-    if @findtype 0xde1 'any' 'backpack'
-       useobject 'found'
-       settimer 'camping' 0
+    //
+    // Check ore cache
+    // 
+    if diffweight < 30
+        while @findtype 0x19b9 'any' 'backpack'
+            useobject 'found'
+            pause 500
+        endwhile
     endif
-  endif
 
-  // Hide once very 11 seconds
-  if timer 'hiding' > 11000
-    useskill 'hiding'
-    settimer 'hiding' 0
-  endif
-
-  // Wait for results
-  for 60
-    if @injournal 'You dig' 'system'
-      break
-    elseif @injournal "You loosen" "system"
-      break
-    elseif @injournal "You find" "system"
-      msg "well look at that..."
-      break
-    elseif @injournal "harvestable" "system"
-      headmsg 'Find a new spot' '43'
-      pause 1000
-      break
-    elseif not @findlayer 'self' 1
-      headmsg 'NO PICK EQUIPPED' '23'
-      break
-    else
-      pause 100
+    // 
+    // Check holding pickaxe
+    // 
+    if not @findlayer 'self' 1
+        pause 1000
+        @unsetalias 'Pickaxe'
     endif
-  endfor
 
-  if timer 'whistle' > 20000
-    emotemsg 'whistles'
-    settimer 'whistle' 0
-  endif
+    // 
+    // Equip pickaxe or stop with msg
+    // 
+    if not findalias 'Pickaxe'
+        if @findtype 0xe86 'any' 'backpack'
+            @setalias 'Pickaxe' 'found'
+            // This equips it
+            useobject 'Pickaxe'
+            pause 1000
+        else
+            headmsg 'No Pickaxe found' '55' 'self'
+            stop
+        endif
+    endif
 
-  //
-  // Check weight
-  // 
-  if diffweight < 10
-    headmsg 'Unload!' '23'
-    stop
-  endif
+    if counttype '0xe86' 'any' 'backpack' == 0
+        sysmsg "On last Pick!" 38
+    endif
+
+    @canceltarget
+
+    //
+    // Mine ore
+    //
+    useobject 'Pickaxe'
+    waitfortarget 5000
+    target! 'self'
+    pause 100
+
+    // Wait for results
+    for 60
+        if @injournal 'You dig' 'system'
+            break
+            elseif @injournal "You loosen" "system"
+            break
+        elseif @injournal "You find" "system"
+            msg "well look at that..."
+            break
+        elseif @injournal "harvestable" "system"
+            headmsg 'Find a new spot' '43'
+            pause 1000
+            break
+        elseif not @findlayer 'self' 1
+            headmsg 'NO PICK EQUIPPED' '23'
+            break
+            else
+            pause 100
+        endif
+    endfor
+    
+    //
+    // Whistle
+    //
+    if timer 'whistle' > 20000
+        emotemsg 'whistles'
+        settimer 'whistle' 0
+    endif
+
+    // 
+    // PK Detect 
+    //
+    if @injournal "now tracking" 'system'
+        for 10
+            sysmsg 'Murderer incoming' 33
+            headmsg 'Murderer incoming' 33
+            pause 200
+            stop
+        endfor
+    endif
 
 endwhile
