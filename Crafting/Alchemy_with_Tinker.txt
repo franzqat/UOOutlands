@@ -191,9 +191,6 @@ while not dead
         replygump 0x38920abd 0
         pause 1000
 
-        headmsg "Ok put keg in my pack"
-        pause 5000
-
         // check keg was made
         if not findtype 0x1940 'any' 'backpack'
             headmsg "Unable to make a keg" 91
