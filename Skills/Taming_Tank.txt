@@ -14,6 +14,7 @@
 // * Rewrote script to avoid fixed vet timers
 //
 /////////////////////////////////////////////
+
 sysmsg "Taming Tank script" 67
 headmsg "Select creature to tame" 55
 promptalias 'tobetamed'
