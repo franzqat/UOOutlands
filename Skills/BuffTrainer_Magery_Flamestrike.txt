@@ -52,11 +52,18 @@
 // -----------
 // Precasts Lightning when killing birds
 //
+// Version 1.8
+// -----------
+// Targets anacondas at zoo, rock guars where hopping
+//   fence and getting you killed.
+// Switched target to find by type as the serial #
+//   is prone to changing.
+//
 // UOSTEAM COPY-PASTE BELOW THIS LINE
 /////////////////////////////////////////////
 
 sysmsg "Buff Trainer Script - Flamestrike" 88
-sysmsg "Version 1.7" 88
+sysmsg "Version 1.8" 88
 
 @useobject 'backpack'
 pause 1000
@@ -308,9 +315,10 @@ while not dead
         if mana > 40
             @canceltarget
             cast "Flame Strike"
+            // anaconda
+            @findtype 0x15 'any' 'world' 0 10
             waitfortarget 5000
-            // rock guar at zoo
-            target! 0x59c9c
+            target! 'found'
         endif
         msg "guards"
         // < END
