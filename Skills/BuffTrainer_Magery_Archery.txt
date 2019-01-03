@@ -49,11 +49,17 @@
 // -----------
 // Will now check bird flag before killing
 //
+// Version 1.7
+// -----------
+// Uses Heavy Xbow and bolts
+// Precasts lightning for birds
+// Searches for anaconda by type id
+//
 // UOSTEAM COPY-PASTE BELOW THIS LINE
 /////////////////////////////////////////////
 
 sysmsg "Buff Trainer Script - Archery" 88
-sysmsg "Version 1.6" 88
+sysmsg "Version 1.7" 88
 
 @useobject 'backpack'
 pause 1000
@@ -103,8 +109,7 @@ pushlist 'scriptregs' 0xf8c // ash
 // 
 @removelist 'ammo'
 @createlist 'ammo'
-pushlist 'ammo' 0xf3f // arrow
-//pushlist 'ammo' 0x1bfb // bolt
+pushlist 'ammo' 0x1bfb // bolt
 
 msg "bank"
 pause 1000
@@ -239,15 +244,22 @@ while not dead
         endwhile
         // get buff
         while not buffexists 'Arcane Empowerment'
-            @getenemy 'enemy' 'gray' 'criminal' next
-            if @inrange 'enemy' 12
-                if graphic 'enemy' == '0x6'
-                    @canceltarget
-                    cast 'Lightning'
-                    waitfortarget 5000
-                    target! 'enemy'
-                endif
-            endif
+            sysmsg "Looking for a bird to kill"
+            removelist 'birds'
+            createlist 'birds'
+            pushlist 'birds' '0x6'
+            @canceltarget
+            cast 'Lightning'
+            waitfortarget 5000
+            while @targetexists
+                for 0 to 'birds'
+                    if @findtype birds[] 'any' 'ground' 12
+                        target! 'found'
+                        @ignoreobject 'found'
+                    endif
+                    pause 100
+                endfor
+            endwhile
             pause 2000
         endwhile
         // mana to recall
@@ -293,17 +305,14 @@ while not dead
         // START > 
         // arm bow/crossbow
         if not @findlayer 'self' 1
-            @findtype 0x13b2 'any' 'backpack'
-            @equipitem 'found' 1
-            @findtype 0xf50 'any' 'backpack'            
+            @findtype 0x13fd 'any' 'backpack'
             @equipitem 'found' 1
             pause 1000
         endif
         @canceltarget
-        // anaconda
-        attack! 0x380c9
+        @findtype 0x15 'any' 'world' 0 10
+        attack! 'found'
         pause 5000
-        msg "guards"
         // < END
         pushlist 'actions' 'train'
     endif
