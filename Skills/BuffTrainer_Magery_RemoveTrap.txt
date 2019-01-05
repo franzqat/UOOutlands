@@ -14,11 +14,11 @@
 // -----------
 // 1) Mark a rune at a bank
 // 2) Mark a rune at a bird spawn
-// 3) Mark a rune at anacondas at Prevalia Zoo
-// 4) Place all 3 runes in your backpack
-// 5) Place arrows, recall regs in a bank bag
-// 5) Start at -bank-, with banker in sight
-// 6) Run script
+// 3) Buy as many tools as you can hold
+// 4) Buy 1 golden trainer box
+// 5) Picks and box in MAIN pack
+// 6) Start at -bank-, with banker in sight
+// 7) Run script
 //
 // Version 1.0
 // -----------
@@ -255,9 +255,6 @@ while not dead
         @useobject 'found'
         removetimer 'tool'
         createtimer 'tool'
-        //
-        // Put your box serial number in below
-        //
 		waitforgump 'found' 5000
         replygump 'found' 7
         // max 10s attempt, in case of server lag
