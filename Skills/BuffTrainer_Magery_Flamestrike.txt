@@ -14,7 +14,7 @@
 // -----------
 // 1) Mark a rune at a bank
 // 2) Mark a rune at a bird spawn
-// 3) Mark a rune at rock guars at Prevalia Zoo
+// 3) Mark a rune at anacondas at Prevalia Zoo
 // 4) Place all 3 runes in your backpack
 // 5) Start at -bank-, with banker in sight
 // 6) Run script
