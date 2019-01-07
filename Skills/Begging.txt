@@ -18,10 +18,12 @@
 
 while not dead
     
+
     if timer 'beg' > 5000
 
         @removetimer 'search'
         @createtimer 'search'
+    	@clearlist 'found'
         while timer 'search' < 1000
             @unsetalias 'enemy'
             @getenemy 'Innocent' 'Humanoid' 'transformation'
