@@ -43,4 +43,6 @@ while not dead
 
     endif
 
+    pause 2000
+
 endwhile
