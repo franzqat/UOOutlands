@@ -10,6 +10,11 @@
 // when needed, recalls you to a marked bank rune
 // to restock scriptregs.
 //
+// Why use Heavy-Xbow? It uses less ammunition, and takes
+// same amount of time. The skill % is weighted to weapon
+// speed. How much less? I think GM with Heavy is 20k bolts,
+// maybe 32K with arrows.
+//
 // How to use?
 // -----------
 // 1) Mark a rune at a bank
@@ -130,7 +135,7 @@ while not dead
                 continue
             endif
         endfor
-        // arrows/bolts
+        // bolts
         for 0 to 'ammo'
             if @counttype ammo[] 'any' 'backpack' < 10
                 @clearlist 'actions'
