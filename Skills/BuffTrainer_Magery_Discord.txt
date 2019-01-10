@@ -50,12 +50,22 @@
 // -----------
 // Will now check bird flag before killing
 //
+// Version 1.7
+// -----------
+// Precasts Lightning when killing birds
+//
+// Version 1.8
+// -----------
+// Targets anacondas at zoo, rock guars where hopping
+//   fence and getting you killed.
+// Switched target to find by type as the serial #
+//   is prone to changing.
+//
 // UOSTEAM COPY-PASTE BELOW THIS LINE
 /////////////////////////////////////////////
 
-
 sysmsg "Buff Trainer Script - Discordance" 88
-sysmsg "Version 1.6" 88
+sysmsg "Version 1.8" 88
 
 @useobject 'backpack'
 pause 1000
@@ -242,15 +252,22 @@ while not dead
         endwhile
         // get buff
         while not buffexists 'Arcane Empowerment'
-            @getenemy 'enemy' 'gray' 'criminal' next
-            if @inrange 'enemy' 12
-                if graphic 'enemy' == '0x6'
-                    @canceltarget
-                    cast 'Lightning'
-                    waitfortarget 5000
-                    target! 'enemy'
-                endif
-            endif
+            sysmsg "Looking for a bird to kill"
+            removelist 'birds'
+            createlist 'birds'
+            pushlist 'birds' '0x6'
+            @canceltarget
+            cast 'Lightning'
+            waitfortarget 5000
+            while @targetexists
+                for 0 to 'birds'
+                    if @findtype birds[] 'any' 'ground' 12
+                        target! 'found'
+                        @ignoreobject 'found'
+                    endif
+                    pause 100
+                endfor
+            endwhile
             pause 2000
         endwhile
         // mana to recall
@@ -294,13 +311,15 @@ while not dead
         //
         // START > 
         if skill 'peacemaking' < 120
+            @canceltarget
 	   	    // Use instrument
 		    @useobject 'instrument'
 	    	pause 1000
+	    	// anaconda
+            @findtype 0x15 'any' 'world' 0 10
             useskill 'Discordance'
-            waitfortarget 2000
-            // rock guar at zoo
-            target! 0x59c9c
+            waitfortarget 5000
+            target! 'found'
             pause 5100
             if @injournal 'disrupting' 'system'
                 pause 6000
