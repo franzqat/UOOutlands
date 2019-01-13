@@ -1,0 +1,201 @@
+/////////////////////////////////////////////
+// UO Steam Pet Healing macro
+// for Outlands
+// by Jewele
+// 
+// Heals/Cures 1 to 5 pets, your choice. Select your pets
+// once, and run macro again every time you need to heal 
+// them. 
+//
+// How to use?
+// -----------
+// 1) Run script first time
+// 2) Select up to 5 pets
+// 3) Re-run every time you need to heal your pets
+//
+// Version 1.0
+// -----------
+// First release! yay! Good macros go through up to 10 
+// revisions before they are perfect. Help me out - feedback!
+//
+// Those important NOTES
+// ---------------------
+// * Most injured pet close to you will be healed
+// * If you are outside bandage range 2 you will be warned to get closer
+// * Poisoned pets within range 12 will immediately receive a Cure spell
+// * Casting Cure while items are equipped will re-equip them.
+// * Dead pets will not be rezzed if aggro is nearby, instead
+//      the macro will switch to healthy pets for healing.
+// * Macro will loop itself until you stop it or run another macro
+// * What if an unbonded pet dies? Macro will be fine.
+// * What if I had 5 pets, but I stabled 3 of them and only have 2? Works fine.
+// * How do I change or reset pets? You can hit [Active Objects]-[Clear Active Objects], 
+//      or just remove the 'pets' list.
+// 
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+
+@cleartargetqueue
+//
+// First time use will prompt user for pets
+//
+if not listexists 'pets'
+    sysmsg "Pet Healing Macro - Version 1.0" 55
+    sysmsg "When prompted select one pet after another" 55
+    sysmsg "When all pets are selected, press ESC" 55
+    @createlist 'pets'
+    //
+    // Maximum 5
+    //
+    for 5
+        sysmsg "Select next pet or ESC to stop" 55
+        promptalias 'pet'
+        if @findobject 'pet'
+            pushlist 'pets' 'pet'
+        else
+            break
+        endif
+    endfor
+endif
+
+//
+// Open pack (forces bandage inventory)
+//
+useobject! 'backpack'
+pause 500
+
+//
+// No bandage warning
+//
+if @counttype '0xe21' 'any' 'backpack' == 0
+    sysmsg "No bandages!" 38
+    stop
+endif
+
+//
+// Low bandage warning
+//
+if @counttype '0xe21' 'any' 'backpack' < 20
+    sysmsg "Low bandages!" 38
+    stop
+endif
+
+//
+// save equip states
+// 
+if @findlayer 'self' 2
+    @setalias 'lhand' 'found'
+endif
+if @findlayer 'self' 1
+    @setalias 'rhand' 'found'
+endif
+
+//
+// resolve enemy
+//
+@unsetalias 'enemy'
+@getenemy 'murderer' 'enemy' 'criminal' 'gray'
+
+//
+// temporary list 
+//
+@removelist 'heal'
+@createlist 'heal'
+
+//
+// Check all pets in range 12 for a cure
+//
+for 0 to 'pets'
+    if poisoned pets[] and @inrange pets[] 15 
+        if mana 'self' > 6
+            headmsg "+Curing+" 65
+            cast 'Cure'
+            waitfortarget 5000
+            target! pets[]
+            //
+            // Reequip
+            // 
+            if not @findlayer 'self' 1
+                equipitem 'rhand' 1
+            endif
+            if not @findlayer 'self' 2
+                equipitem 'lhand' 2
+            endif
+        endif
+    endif
+endfor
+
+//
+// Find most wounded pet near you (pet heal range is 2)
+//
+for 0 to 'pets'
+    if @inrange pets[] 5
+        //
+        // Only allow dead pets if no aggro nearby
+        // Dead pets get priority
+        // 
+        if hits pets[] == 0
+            if not @inrange 'enemy' 10
+                pushlist 'heal' pets[]
+                break
+            else
+                headmsg "Dead pets cannot resurrected near aggro" 65
+                continue
+            endif
+        endif
+        // 
+        // Check empty heal list
+        //
+        if list 'heal' == 0
+            pushlist 'heal' pets[]
+            continue
+        endif
+        //
+        // Compare next pet to previous
+        // 
+        if diffhits pets[] > diffhits heal[0]
+            @clearlist 'heal'
+            @pushlist 'heal' pets[]
+        endif
+    endif
+endfor
+
+//
+// Check most damaged pet in range for heal
+//
+if not @inrange heal[0] 2 and @diffhits heal[0] > 0
+   headmsg "(closer)" 65
+   pause 2000
+   replay
+endif
+
+//
+//  Heal pet
+//
+if diffhits heal[0] > 0
+    headmsg "+Healing+" 65
+    autotargetobject heal[0]
+    usetype 0xe21 'any' 'backpack'
+    @clearjournal
+    settimer 'vet' 0
+    while timer 'vet' < 8000
+        if @injournal 'heal' 'system'
+            break
+        endif
+        if @injournal 'cure' 'system'
+            break
+        endif
+        if @injournal 'finish' 'system'
+            break
+        endif
+        if @injournal 'not damaged' 'system'
+            break
+        endif
+        if @injournal 'resurrect' 'system'
+            break
+        endif
+    endwhile
+endif
+
+pause 1000
+replay
