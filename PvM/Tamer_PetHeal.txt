@@ -22,6 +22,11 @@
 // -----------
 // Fixed an issue with pet rez near aggro feature.
 //
+// Version 1.2
+// -----------
+// Moved aggro detection into code which only executes if pet is dead.
+// Was causing mobs to flash around you while healing pets.
+//
 // Those important NOTES
 // ---------------------
 // * Most injured pet close to you will be healed
@@ -45,7 +50,7 @@
 // First time use will prompt user for pets
 //
 if not listexists 'pets'
-    sysmsg "Pet Healing Macro - Version 1.1" 55
+    sysmsg "Pet Healing Macro - Version 1.2" 55
     sysmsg "When prompted select one pet after another" 55
     sysmsg "When all pets are selected, press ESC" 55
     @createlist 'pets'
@@ -96,12 +101,6 @@ if @findlayer 'self' 1
 endif
 
 //
-// resolve enemy
-//
-@unsetalias 'enemy'
-@getenemy 'murderer' 'enemy' 'criminal' 'gray'
-
-//
 // temporary list 
 //
 @removelist 'heal'
@@ -150,6 +149,8 @@ for 0 to 'pets'
         // Dead pets get priority
         // 
         if hits pets[] == 0
+            @unsetalias 'enemy'
+            @getenemy 'murderer' 'enemy' 'criminal' 'gray'
             if @inrange 'enemy' 10
                 sysmsg "Dead pets cannot resurrected near aggro" 65
                 continue
