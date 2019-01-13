@@ -18,11 +18,16 @@
 // First release! yay! Good macros go through up to 10 
 // revisions before they are perfect. Help me out - feedback!
 //
+// Version 1.1
+// -----------
+// Fixed an issue with pet rez near aggro feature.
+//
 // Those important NOTES
 // ---------------------
 // * Most injured pet close to you will be healed
 // * If you are outside bandage range 2 you will be warned to get closer
 // * Poisoned pets within range 12 will immediately receive a Cure spell
+// * To avoid Cure spam, Cure results are not checked and only 1 Cure is used.
 // * Casting Cure while items are equipped will re-equip them.
 // * Dead pets will not be rezzed if aggro is nearby, instead
 //      the macro will switch to healthy pets for healing.
@@ -40,7 +45,7 @@
 // First time use will prompt user for pets
 //
 if not listexists 'pets'
-    sysmsg "Pet Healing Macro - Version 1.0" 55
+    sysmsg "Pet Healing Macro - Version 1.1" 55
     sysmsg "When prompted select one pet after another" 55
     sysmsg "When all pets are selected, press ESC" 55
     @createlist 'pets'
@@ -125,31 +130,32 @@ for 0 to 'pets'
     endif
 endfor
 
+
+@clearlist 'heal'
 //
 // Find most wounded pet near you (pet heal range is 2)
 //
 for 0 to 'pets'
     if @inrange pets[] 5
+        // 
+        // Check empty heal list
+        //
+        if list 'heal' == 0
+            @pushlist 'heal' pets[]
+            continue
+        endif
+
         //
         // Only allow dead pets if no aggro nearby
         // Dead pets get priority
         // 
         if hits pets[] == 0
-            if not @inrange 'enemy' 10
-                pushlist 'heal' pets[]
-                break
-            else
-                headmsg "Dead pets cannot resurrected near aggro" 65
+            if @inrange 'enemy' 10
+                sysmsg "Dead pets cannot resurrected near aggro" 65
                 continue
             endif
         endif
-        // 
-        // Check empty heal list
-        //
-        if list 'heal' == 0
-            pushlist 'heal' pets[]
-            continue
-        endif
+
         //
         // Compare next pet to previous
         // 
@@ -172,7 +178,7 @@ endif
 //
 //  Heal pet
 //
-if diffhits heal[0] > 0
+if @diffhits heal[0] > 0 
     headmsg "+Healing+" 65
     autotargetobject heal[0]
     usetype 0xe21 'any' 'backpack'
