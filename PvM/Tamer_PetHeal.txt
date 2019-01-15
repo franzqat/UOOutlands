@@ -27,6 +27,19 @@
 // Moved aggro detection into code which only executes if pet is dead.
 // Was causing mobs to flash around you while healing pets.
 //
+// Version 1.3
+// -----------
+// Removed opening backpack each time script ran, it was closing open bags.
+// Reduced aggro range detection for rezzing pets, it was picking up mobs
+//    between floors in Aegis keep.
+//
+// Version 1.4
+// -----------
+// Changed messages to a green color
+// Re-bandaging will not reset existing bandage attempts, but you will get a message
+// Fixed bug where script would stop if you ran low on bandages
+// Fixed bug where a pet would be rezzed if near aggro if selected first
+//
 // Those important NOTES
 // ---------------------
 // * Most injured pet close to you will be healed
@@ -41,6 +54,7 @@
 // * What if I had 5 pets, but I stabled 3 of them and only have 2? Works fine.
 // * How do I change or reset pets? You can hit [Active Objects]-[Clear Active Objects], 
 //      or just remove the 'pets' list.
+// * It says I have no bandages!? Open pack once, or open bag within pack that has bandages.
 // 
 // UOSTEAM COPY-PASTE BELOW THIS LINE
 /////////////////////////////////////////////
@@ -50,29 +64,24 @@
 // First time use will prompt user for pets
 //
 if not listexists 'pets'
-    sysmsg "Pet Healing Macro - Version 1.2" 55
-    sysmsg "When prompted select one pet after another" 55
-    sysmsg "When all pets are selected, press ESC" 55
+    sysmsg "Pet Healing Macro - Version 1.4" 88
+    sysmsg "When prompted select one pet after another" 88
+    sysmsg "When all pets are selected, press ESC" 88
     @createlist 'pets'
     //
     // Maximum 5
     //
     for 5
-        sysmsg "Select next pet or ESC to stop" 55
+        sysmsg "Select next pet" 88
         promptalias 'pet'
         if @findobject 'pet'
             pushlist 'pets' 'pet'
+            sysmsg "Your pet has been saved, press ESC if you have no more pets" 44
         else
             break
         endif
     endfor
 endif
-
-//
-// Open pack (forces bandage inventory)
-//
-useobject! 'backpack'
-pause 500
 
 //
 // No bandage warning
@@ -87,7 +96,6 @@ endif
 //
 if @counttype '0xe21' 'any' 'backpack' < 20
     sysmsg "Low bandages!" 38
-    stop
 endif
 
 //
@@ -107,12 +115,12 @@ endif
 @createlist 'heal'
 
 //
-// Check all pets in range 12 for a cure
+// Check all pets in spell range for a cure
 //
 for 0 to 'pets'
     if poisoned pets[] and @inrange pets[] 15 
         if mana 'self' > 6
-            headmsg "+Curing+" 65
+            headmsg "+Curing+" 172
             cast 'Cure'
             waitfortarget 5000
             target! pets[]
@@ -129,32 +137,33 @@ for 0 to 'pets'
     endif
 endfor
 
-
 @clearlist 'heal'
+
 //
-// Find most wounded pet near you (pet heal range is 2)
+// Find most wounded pet near you
 //
 for 0 to 'pets'
-    if @inrange pets[] 5
+    
+    if @inrange pets[] 15
+
+        //
+        // Dead pets cannot be resurrected near aggro
+        //
+        if hits pets[] == 0
+            @unsetalias 'enemy'
+            @getenemy 'murderer' 'enemy' 'criminal' 'gray'
+            if @inrange 'enemy' 6
+                sysmsg "Dead pets cannot resurrected near aggro" 172
+                continue
+            endif
+        endif
+
         // 
         // Check empty heal list
         //
         if list 'heal' == 0
             @pushlist 'heal' pets[]
             continue
-        endif
-
-        //
-        // Only allow dead pets if no aggro nearby
-        // Dead pets get priority
-        // 
-        if hits pets[] == 0
-            @unsetalias 'enemy'
-            @getenemy 'murderer' 'enemy' 'criminal' 'gray'
-            if @inrange 'enemy' 10
-                sysmsg "Dead pets cannot resurrected near aggro" 65
-                continue
-            endif
         endif
 
         //
@@ -168,23 +177,44 @@ for 0 to 'pets'
 endfor
 
 //
-// Check most damaged pet in range for heal
+// Warn user about bandge continuation
 //
-if not @inrange heal[0] 2 and @diffhits heal[0] > 0
-   headmsg "(closer)" 65
-   pause 2000
-   replay
+if @timerexists 'vet' and @timer 'vet' < 8000
+    sysmsg "Waiting for previous bandage to finish" 172
 endif
 
 //
-//  Heal pet
+// Heal pat
 //
-if @diffhits heal[0] > 0 
-    headmsg "+Healing+" 65
-    autotargetobject heal[0]
-    usetype 0xe21 'any' 'backpack'
-    @clearjournal
-    settimer 'vet' 0
+if not @timerexists 'vet'
+
+    //
+    // Check most damaged pet in range for heal
+    //
+    if not @inrange heal[0] 2 and @diffhits heal[0] > 0
+       headmsg "(closer)" 172
+       pause 2000
+       replay
+    endif
+
+    //
+    //  Heal pet
+    //
+    if @diffhits heal[0] > 0 
+
+        headmsg "+Healing+" 172
+        autotargetobject heal[0]
+        usetype 0xe21 'any' 'backpack'
+        @clearjournal
+        settimer 'vet' 0
+    endif
+
+endif
+
+//
+// Wait for bandage finish
+//
+if @timerexists 'vet'
     while timer 'vet' < 8000
         if @injournal 'heal' 'system'
             break
@@ -202,6 +232,7 @@ if @diffhits heal[0] > 0
             break
         endif
     endwhile
+    @removetimer 'vet'
 endif
 
 pause 1000
