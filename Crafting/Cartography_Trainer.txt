@@ -1,0 +1,61 @@
+/////////////////////////////////////////////
+// UO Steam Cartography Trainer Macro
+// for Outlands
+//
+// Steps for using:
+// 1) Have blank maps
+// 2) Have mapmakers pen
+// 3) !IMPORTANT : Attempt to make one of the items you want so it sets Make Last
+// 4) Set to [X] Loop, run
+//
+// Version 1.0
+// -----------
+// * first version
+//
+/////////////////////////////////////////////
+
+// 
+// Pen check
+//
+if counttype 0xfbf 'any' 'backpack' < 1
+    headmsg 'I have no pens!' '88'
+    stop
+endif
+
+// 
+// Map check
+//
+if counttype 0x14ec '2955' 'backpack' < 1
+    headmsg 'I have no blank maps!' '88'
+    stop
+endif
+
+//
+// Make last map
+//
+@findtype 0xfbf 'any' 'backpack'  
+useobject 'found'
+pause 100
+waitforgump 0x38920abd 5000
+replygump 0x38920abd 7
+pause 2000
+
+//
+// Dump maps to ground
+//
+if @findtype 0x14ec 2669 'backpack'
+    moveitemoffset 'found' 'ground' 0 0 0
+    pause 500
+endif
+if @findtype 0x14ec 2669 'backpack'
+    moveitemoffset 'found' 'ground' 1 1 0
+    pause 500
+endif
+if @findtype 0x14ec 2669 'backpack'
+    moveitemoffset 'found' 'ground' 1 -1 0
+    pause 500
+endif
+if @findtype 0x14ec 2669 'backpack'
+    moveitemoffset 'found' 'ground' -1 1 0
+    pause 500
+endif
