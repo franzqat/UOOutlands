@@ -1,0 +1,84 @@
+//
+// Open pack (forces bandage inventory)
+//
+useobject! 'backpack'
+pause 500
+while not dead
+  //
+  // tracking warning
+  //
+  if @injournal 'now tracking' 'system'
+    for 3
+      headmsg "TRACKING PLAYER" 23
+      pause 500
+    endfor
+    @clearjournal
+  endif
+  //
+  // low bandages check
+  //
+  if counttype '0xe21' 'any' 'backpack' == 0
+    headmsg "Out of bandages!" 38
+    stop
+  endif
+  //
+  // out of bandages check
+  //
+  if counttype '0xe21' 'any' 'backpack' < 20
+    headmsg "Low on bandages" 38
+    pause 1000
+  endif
+  //
+  // wait for bandage finish
+  //
+  if timerexists 'healing'
+    if @injournal 'heal' 'system'
+      removetimer 'healing'
+    endif
+    if @injournal 'cure' 'system'
+      removetimer 'healing'
+    endif
+    if @injournal 'finish' 'system'
+      removetimer 'healing'
+    endif
+    if timer 'healing' > 15000
+      removetimer 'healing'
+    endif
+  endif
+  //
+  // Check self heal
+  //
+  if not timerexists 'healing'
+    if poisoned 'self' or diffhits > 10
+      createtimer 'healing'
+      headmsg "(bandaging)" 67
+      bandageself
+      @clearjournal
+    endif
+  endif
+  //
+  // Check crew heal
+  //
+  if not timerexists 'healing'
+    @Getfriend 'friend' 'innocent'
+    if @inrange 'friend' 2
+      createtimer 'healing'
+      headmsg "(bandaging crew)" 67
+      usetype 0xe21 'any' 'backpack'
+      waitfortarget 5000
+      target! 'friend'
+      @clearjournal
+    endif
+  endif
+  //
+  // Repair ship
+  //
+  @usetype 0x649e 'any' 'backpack'
+  waitforgump 0x4bcb6173 2000
+  @replygump 0x4bcb6173 2
+  waitforgump 0x4bcb6173 2000
+  @replygump 0x4bcb6173 3
+  waitforgump 0x4bcb6173 2000
+  @replygump 0x4bcb6173 4
+  pause 1000
+endwhile
