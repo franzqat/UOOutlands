@@ -1,0 +1,112 @@
+//
+// Open pack (forces bandage inventory)
+//
+useobject! 'backpack'
+pause 500
+while not dead
+
+    //
+    // arm bow/crossbow
+    //
+    if not @findlayer 'self' 1
+        // heavy xbow
+        @findtype 0x13fd 'any' 'backpack'
+        @equipitem 'found' 1
+        // bow
+        @findtype 0x13b2 'any' 'backpack'
+        @equipitem 'found' 1
+        pause 1000
+    endif
+    
+    //
+    // low bandages check
+    //
+    if counttype '0xe21' 'any' 'backpack' == 0
+        headmsg "Out of bandages!" 38
+        stop
+    endif
+    
+    //
+    // out of bandages check
+    //
+    if counttype '0xe21' 'any' 'backpack' < 20
+        headmsg "Low on bandages" 38
+        pause 1000
+    endif
+
+    //
+    // wait for bandage finish
+    //
+    if timerexists 'healing'
+        if @injournal 'heal' 'system'
+            removetimer 'healing'
+        endif
+        if @injournal 'cure' 'system'
+            removetimer 'healing'
+        endif
+        if @injournal 'finish' 'system'
+            removetimer 'healing'
+        endif
+        if timer 'healing' > 15000
+            removetimer 'healing'
+        endif
+    endif
+
+    //
+    // Check self heal
+    //
+    if not timerexists 'healing' 
+        if poisoned 'self' or diffhits > 10
+            createtimer 'healing'
+            headmsg "(bandaging)" 67
+            bandageself
+            @clearjournal
+        endif        
+    endif
+
+    //
+    // Check crew heal
+    //
+    if not timerexists 'healing' 
+        @Getfriend 'friend' 'innocent'
+            if @inrange 'friend' 2
+                createtimer 'healing'
+                headmsg "(bandaging crew)" 67
+                usetype 0xe21 'any' 'backpack'
+                waitfortarget 5000
+                target! 'friend'
+                @clearjournal
+            endif
+        endif        
+    endif
+
+    //
+    // attack check
+    //
+    @Getenemy 'murderer' 'enemy' 'criminal' 'gray'
+    //
+    // throw explosion if you have them
+    //
+    if timerexists 'explosion'
+        //
+        // reset after 11 seconds
+        //
+        if timer 'explosion' > 11000
+            removetimer 'explosion'
+        endif
+    else
+        if @inrange 'enemy' 12
+            if not @inrange 'enemy' 4
+                if counttype 0xf0d 'any' 'backpack' > 0
+                    findtype 0xf0d 'any' 'backpack' > 0
+                    useobject 'found'
+                    waitfortarget 5000
+                    target! 'enemy'
+                    msg "lookout!" 67
+                    createtimer 'explosion'
+                endif
+            endif
+        endif
+    endif
+    pause 1000
+endwhile
