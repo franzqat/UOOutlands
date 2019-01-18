@@ -69,7 +69,7 @@ while not dead
   // Does crew need a bandage?
   //
   if not @timerexists 'healing'
-    if @findojbect 'friend'
+    if @findobject 'friend'
       @clearjournal
       headmsg "(bandaging crew)" 67
       createtimer 'healing'
