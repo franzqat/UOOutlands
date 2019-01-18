@@ -1,10 +1,7 @@
-//
-// Open pack (forces bandage inventory)
-//
 @clearjournal
-
 while not dead
-  //
+  @canceltarget
+    //
   // Script indicator for player
   //
   headmsg "[FIGHT]" 92

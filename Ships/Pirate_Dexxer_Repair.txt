@@ -1,6 +1,7 @@
 @clearjournal
 while not dead
   headmsg "[REPAIR]" 92
+  @canceltarget
   //
   // tracking warning
   //
