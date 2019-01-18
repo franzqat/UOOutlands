@@ -1,9 +1,6 @@
-//
-// Open pack (forces bandage inventory)
-//
-useobject! 'backpack'
-pause 500
+@clearjournal
 while not dead
+  headmsg "[REPAIR]" 92
   //
   // tracking warning
   //
@@ -28,6 +25,18 @@ while not dead
     headmsg "Low on bandages" 38
     pause 1000
   endif
+  //
+  // get nearest friend for heal
+  //
+  for 20
+    @unsetalias 'friend'
+    @Getfriend 'any' 'humanoid'
+    if @inrange 'friend' 2
+      pause 100
+      break
+    endif
+    @unsetalias 'friend'
+  endfor
   //
   // wait for bandage finish
   //
@@ -57,17 +66,16 @@ while not dead
     endif
   endif
   //
-  // Check crew heal
+  // Does crew need a bandage?
   //
-  if not timerexists 'healing'
-    @Getfriend 'friend' 'innocent'
-    if @inrange 'friend' 2
-      createtimer 'healing'
+  if not @timerexists 'healing'
+    if @findojbect 'friend'
+      @clearjournal
       headmsg "(bandaging crew)" 67
+      createtimer 'healing'
       usetype 0xe21 'any' 'backpack'
       waitfortarget 5000
       target! 'friend'
-      @clearjournal
     endif
   endif
   //
