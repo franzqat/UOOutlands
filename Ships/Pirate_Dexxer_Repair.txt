@@ -41,18 +41,18 @@ while not dead
   //
   // wait for bandage finish
   //
-  if timerexists 'healing'
+  if @timerexists 'healing'
+    if timer 'healing' > 15000
+      @removetimer 'healing'
+    endif
     if @injournal 'heal' 'system'
-      removetimer 'healing'
+      @removetimer 'healing'
     endif
     if @injournal 'cure' 'system'
-      removetimer 'healing'
+      @removetimer 'healing'
     endif
     if @injournal 'finish' 'system'
-      removetimer 'healing'
-    endif
-    if timer 'healing' > 15000
-      removetimer 'healing'
+      @removetimer 'healing'
     endif
   endif
   //
@@ -72,11 +72,14 @@ while not dead
   if not @timerexists 'healing'
     if @findobject 'friend'
       @clearjournal
-      headmsg "(bandaging crew)" 67
-      createtimer 'healing'
       usetype 0xe21 'any' 'backpack'
       waitfortarget 5000
       target! 'friend'
+      pause 500
+      if not @injournal 'not damaged' 'system'
+        headmsg "(bandaging crew)" 67
+        createtimer 'healing'
+      endif
     endif
   endif
   //
