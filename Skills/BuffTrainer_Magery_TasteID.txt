@@ -245,7 +245,7 @@ while not dead
             useskill "Taste Identification"
             waitfortarget 5000
             target! 'found'
-            pause 1000
+            pause 1100
         endfor
         msg "guards"
         // < END
