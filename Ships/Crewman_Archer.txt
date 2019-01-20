@@ -122,5 +122,6 @@ while not dead
     waitforgump 0xfe5c638b 5000
     replygump 0xfe5c638b 5
     settimer 'track' 0
+    pause 1000
   endif
 endwhile
