@@ -198,6 +198,8 @@ while not dead
     //
     if @counttype regs[0] 'any' 'backpack' < 200
         sysmsg "restocking reagents" 44
+        msg "bank"
+		pause 500
         movetype regs[0] 'regbag' 'backpack' 0 0 0 'any' 200
         pause 2000
     endif
@@ -338,9 +340,10 @@ while not dead
     // Check if keg full
     //
     if @injournal 'hold any more' 'system'
-        headmsg "Keg full" 91
-        @findtype 0x1940 'any' 'backpack'
-        moveitem 'found' 'kegbag'
+        headmsg "Keg full" 91  
+        msg "bank"
+		pause 500
+        movetype 0x1940 'backpack' 'kegbag' 0 0 0 'any' 1
         pause 2000
         @clearjournal
     endif
