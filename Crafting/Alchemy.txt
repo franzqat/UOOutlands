@@ -19,7 +19,7 @@
 // UOSTEAM COPY-PASTE BELOW THIS LINE
 /////////////////////////////////////////////
 
-sysmsg "Alchemy Trainer Script" 88
+sysmsg "Alchemy Script" 88
 sysmsg "Version 1.0" 88
 //
 // Open backpack
