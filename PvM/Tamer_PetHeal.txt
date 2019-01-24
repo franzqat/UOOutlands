@@ -40,6 +40,10 @@
 // Fixed bug where script would stop if you ran low on bandages
 // Fixed bug where a pet would be rezzed if near aggro if selected first
 //
+// Version 1.5
+// -----------
+// Added message when player finishes selecting pets
+//
 // Those important NOTES
 // ---------------------
 // * Most injured pet close to you will be healed
@@ -64,7 +68,7 @@
 // First time use will prompt user for pets
 //
 if not listexists 'pets'
-    sysmsg "Pet Healing Macro - Version 1.4" 88
+    sysmsg "Pet Healing Macro - Version 1.5" 88
     sysmsg "When prompted select one pet after another" 88
     sysmsg "When all pets are selected, press ESC" 88
     @createlist 'pets'
@@ -81,6 +85,7 @@ if not listexists 'pets'
             break
         endif
     endfor
+    sysmsg "Thank you, pets saved, script is ready" 44
 endif
 
 //
