@@ -16,11 +16,15 @@
 // -----------
 // First release! yay!
 //
+// Version 1.1
+// -----------
+// Fixed issue with making Greater Cures
+//
 // UOSTEAM COPY-PASTE BELOW THIS LINE
 /////////////////////////////////////////////
 
 sysmsg "Alchemy Script" 88
-sysmsg "Version 1.0" 88
+sysmsg "Version 1.1" 88
 //
 // Open backpack
 //
@@ -244,7 +248,7 @@ while not dead
     elseif @inlist 'potion' 'Greater Cure'
         replygump 0x38920abd 101
         waitforgump 0x38920abd 5000 
-        replygump 0x38920abd 201
+        replygump 0x38920abd 202
     elseif @inlist 'potion' 'Refresh'
         replygump 0x38920abd 102
         waitforgump 0x38920abd 5000 
