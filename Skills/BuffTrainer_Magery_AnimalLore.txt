@@ -14,7 +14,7 @@
 // -----------
 // 1) Mark a rune at a bank
 // 2) Mark a rune at a bird spawn
-// 3) Mark a rune at Prevalia Zoo near anacondas
+// 3) Mark a rune at anacondas at Prevalia Zoo
 // 4) Place all 3 runes in your backpack
 // 5) Start at -bank-, with banker in sight
 // 6) Run script
@@ -52,11 +52,18 @@
 // -----------
 // Precasts Lightning when killing birds
 //
+// Version 1.8
+// -----------
+// Targets anacondas at zoo, rock guars where hopping
+//   fence and getting you killed.
+// Switched target to find by type as the serial #
+//   is prone to changing.
+//
 // UOSTEAM COPY-PASTE BELOW THIS LINE
 /////////////////////////////////////////////
 
 sysmsg "Buff Trainer Script - Animal Lore" 88
-sysmsg "Version 1.7" 88
+sysmsg "Version 1.8" 88
 
 @useobject 'backpack'
 pause 1000
@@ -101,14 +108,6 @@ pushlist 'scriptregs' 0xf7b // moss
 pushlist 'scriptregs' 0xf86 // root
 pushlist 'scriptregs' 0xf8c // ash
 
-//
-// Train Regs (stocks 200)
-// 
-@removelist 'trainregs'
-@createlist 'trainregs'
-pushlist 'trainregs' 0xf8c // ash
-pushlist 'trainregs' 0xf8d // silk
-
 msg "bank"
 pause 1000
 msg "bank"
@@ -123,14 +122,6 @@ while not dead
         // script regs
         for 0 to 'scriptregs'
             if @counttype scriptregs[] 'any' 'backpack' < 5
-                @clearlist 'actions'
-                pushlist 'actions' 'restock'
-                continue
-            endif
-        endfor
-        // train regs
-        for 0 to 'trainregs'
-            if @counttype trainregs[] 'any' 'backpack' < 10
                 @clearlist 'actions'
                 pushlist 'actions' 'restock'
                 continue
@@ -181,19 +172,6 @@ while not dead
                     pause 1500
                     if timer 'restock' > 30000
                         sysmsg "I cannot restock the script regs" 44
-                        stop
-                    endif
-                endwhile
-            endfor
-            for 0 to 'trainregs'
-                removetimer 'restock'
-                createtimer 'restock'
-                while counttype trainregs[] 'any' 'backpack' < 200
-                    sysmsg "restocking reagent" 44
-                    movetype trainregs[] 'bankbag' 'backpack' 0 0 0 'any' 200
-                    pause 1500
-                    if timer 'restock' > 30000
-                        sysmsg "I cannot restock the train regs" 44
                         stop
                     endif
                 endwhile
@@ -301,11 +279,11 @@ while not dead
         // INSERT TRAINING SEQUENCE HERE
         //
         // START > 
-        @canceltarget
         @findtype 0x15 'any' 'world' 0 10
         waitfortarget 5000
         waitforcontext 'found' 0 5000
         pause 2000
+        msg "guards"
         // < END
         pushlist 'actions' 'train'
     endif
