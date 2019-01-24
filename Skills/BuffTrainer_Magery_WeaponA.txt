@@ -2,23 +2,20 @@
 // UO Steam Recall Skill Buff Trainer
 // for Outlands
 // by Jewele
-// 
-// !MINOC SYNDICATE ONLY!
 //
-// Recalls you to a marked location to kill a bird,
-// back to a marked training spot, trains, and 
-// when needed, recalls you to a marked bank rune
-// to restock scriptregs.
+// Recalls you to a marked location to kill a bird
+// and then back to a marked training spot.
 //
 // How to use?
 // -----------
-// 1) Mark a rune at a bank
+// 1) Mark a rune at a bank, within melee range of dummy
+//    Make sure you leave space to walk two tiles South
 // 2) Mark a rune at a bird spawn
-// 3) Place all 3 runes in your backpack
-// 4) Review 'trainregs' list below to make sure it matches
-//    the spells you are training with.
-// 5) Start at -bank-, with banker in sight
-// 6) Run script
+// 3) Place both runes in your backpack
+// 4) Purchase several wooden training weapons for your skill
+// 5) Review 'scriptregs' and stock bank bag with those
+// 6) Start at -bank-, with banker in sight, and dummy next to you
+// 7) Run script
 //
 // Version 1.0
 // -----------
@@ -63,7 +60,6 @@
 sysmsg "Buff Trainer Script - Weapon Part A" 88
 sysmsg "Version 1.8" 88
 
-warmode 'off'
 @useobject 'backpack'
 pause 1000
 
