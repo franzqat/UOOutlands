@@ -50,7 +50,7 @@ useobject 'found'
 pause 100
 waitforgump 0x38920abd 5000
 replygump 0x38920abd 7
-pause 2000
+pause 500
 
 // Dump to trash
 while @findtype 0x14ec 2669 'backpack'
