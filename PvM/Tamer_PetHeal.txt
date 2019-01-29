@@ -189,7 +189,7 @@ if @timerexists 'vet' and @timer 'vet' < 8000
 endif
 
 //
-// Heal pat
+// Heal pet
 //
 if not @timerexists 'vet'
 
@@ -206,7 +206,6 @@ if not @timerexists 'vet'
     //  Heal pet
     //
     if @diffhits heal[0] > 0 
-
         headmsg "+Healing+" 172
         autotargetobject heal[0]
         usetype 0xe21 'any' 'backpack'
