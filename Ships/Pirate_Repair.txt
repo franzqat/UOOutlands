@@ -29,15 +29,16 @@ while not dead
   //
   // get nearest friend for heal
   //
-  for 20
-    @unsetalias 'friend'
-    @Getfriend 'any' 'humanoid'
-    if @inrange 'friend' 2
-      pause 100
-      break
-    endif
-    @unsetalias 'friend'
-  endfor
+  if not @findalias 'hurtcrew' 
+    for 20
+      @Getfriend 'innocent' 'humanoid'
+      if @inrange 'friend' 2
+        @setalias 'hurtcrew' 'friend'
+        pause 100
+        break
+      endif
+    endfor
+  endif
   //
   // wait for bandage finish
   //
@@ -70,16 +71,32 @@ while not dead
   // Does crew need a bandage?
   //
   if not @timerexists 'healing'
-    if @findobject 'friend'
-      @clearjournal
-      usetype 0xe21 'any' 'backpack'
-      waitfortarget 5000
-      target! 'friend'
-      pause 500
-      if not @injournal 'not damaged' 'system'
-        headmsg "(bandaging crew)" 67
-        createtimer 'healing'
+    headmsg "no timer"
+    if findalias 'hurtcrew'
+      headmsg "found hurtcrew"
+      if @inrange 'hurtcrew' 2
+        headmsg "in range 2"
+        @clearjournal
+        usetype 0xe21 'any' 'backpack'
+        waitfortarget 5000
+        target! 'hurtcrew'
+        pause 500
+        //
+        // if crewman doesn't need a bandage, unset it
+        //
+        if @injournal 'not damaged' 'system'
+          @unsetalias 'hurtcrew'
+          headmsg "wasnt hurt, unsetting"
+        else
+          headmsg "(bandaging crew)" 67
+          createtimer 'healing'
+        endif
+      else
+        headmsg "hurtcrew out of range"
+        @unsetalias 'hurtcrew'
       endif
+    else
+      headmsg "no hurtcrew"
     endif
   endif
   //
