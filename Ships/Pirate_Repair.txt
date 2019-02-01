@@ -1,16 +1,71 @@
+/////////////////////////////////////////////
+// UO Steam Ship assist macro
+// for Outlands
+// by Jewele
+// 
+// Heals you and nearby crew, spams repair on your ship.
+//
+// *IMPORTANT*
+//
+// Every time you spawn new crew (summon) - you have to re-assign.
+//
+// How to use?
+// -----------
+// 1) Run script
+// 2) Select all crew members
+// 3) As long as those exact crew stay on ship, you can run 
+//    script any time to heal them.
+// 4) Stay near injured crew to heal them
+//
+// Important Notes
+// ---------------
+// * The script will pause if you have an active target up. This 
+//   assumes you are firing your cannons, etc.
+// * Remember if you send crew below decks, you need to re-target
+//   them when they come back up. Crew are spawned with new IDs
+//   every time.
+//
+// Version 1.0
+// -----------
+// First release! yay! 
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+
 @clearjournal
-while not dead
-  headmsg "[REPAIR]" 92
-  @canceltarget
-  //
-  // tracking warning
-  //
-  if @injournal 'now tracking' 'system'
-    for 3
-      headmsg "TRACKING PLAYER" 23
-      pause 500
+@unsetalias 'hurt'
+if not listexists 'crew'
+    sysmsg "When prompted select crewman after another" 88
+    sysmsg "When all crew are selected, press ESC" 88
+    @createlist 'crew'
+    //
+    // Maximum 5
+    //
+    for 10
+        sysmsg "Select next crew" 88
+        promptalias 'crewman'
+        if @findobject 'crewman'
+            pushlist 'crew' 'crewman'
+            sysmsg "Your crewman has been saved, press ESC if you have no more crew" 44
+        else
+            break
+        endif
     endfor
-    @clearjournal
+    sysmsg "Thank you, crew saved, script is ready" 44
+endif
+
+while not dead
+  //
+  // Script indicator for player
+  //
+  headmsg "[REPAIR]" 92
+  //
+  // Pause 2 seconds for active targets
+  //
+  if @targetexists
+    headmsg "(active target)" 66
+    pause 1000
+    replay
   endif
   //
   // low bandages check
@@ -24,20 +79,7 @@ while not dead
   //
   if counttype '0xe21' 'any' 'backpack' < 20
     headmsg "Low on bandages" 38
-    pause 1000
-  endif
-  //
-  // get nearest friend for heal
-  //
-  if not @findalias 'hurtcrew' 
-    for 20
-      @Getfriend 'innocent' 'humanoid'
-      if @inrange 'friend' 2
-        @setalias 'hurtcrew' 'friend'
-        pause 100
-        break
-      endif
-    endfor
+    pause 100
   endif
   //
   // wait for bandage finish
@@ -57,11 +99,11 @@ while not dead
     endif
   endif
   //
-  // Check self heal
+  // Do I need a bandage?
   //
-  if not timerexists 'healing'
+  if not @timerexists 'healing'
     if poisoned 'self' or diffhits > 10
-      createtimer 'healing'
+      @createtimer 'healing'
       headmsg "(bandaging)" 67
       bandageself
       @clearjournal
@@ -71,32 +113,38 @@ while not dead
   // Does crew need a bandage?
   //
   if not @timerexists 'healing'
-    headmsg "no timer"
-    if findalias 'hurtcrew'
-      headmsg "found hurtcrew"
-      if @inrange 'hurtcrew' 2
-        headmsg "in range 2"
-        @clearjournal
-        usetype 0xe21 'any' 'backpack'
-        waitfortarget 5000
-        target! 'hurtcrew'
-        pause 500
-        //
-        // if crewman doesn't need a bandage, unset it
-        //
-        if @injournal 'not damaged' 'system'
-          @unsetalias 'hurtcrew'
-          headmsg "wasnt hurt, unsetting"
-        else
-          headmsg "(bandaging crew)" 67
-          createtimer 'healing'
-        endif
-      else
-        headmsg "hurtcrew out of range"
-        @unsetalias 'hurtcrew'
+    // 
+    // if hurt healed crew is nearby
+    //
+    if findalias 'hurt' and @inrange 'hurt' 2
+      @clearjournal
+      usetype 0xe21 'any' 'backpack'
+      waitfortarget 5000
+      target! 'hurt'
+      settimer 'healing' 0
+      pause 1000
+      if @injournal 'not damaged' 'system'
+        @removetimer 'healing' 
+        @unsetalias 'hurt'
       endif
     else
-      headmsg "no hurtcrew"
+      for 0 to 'crew'
+        if @inrange crew[] 2
+          @clearjournal
+          usetype 0xe21 'any' 'backpack'
+          waitfortarget 5000
+          target! crew[]
+          settimer 'healing' 0
+          pause 1000
+          if @injournal 'not damaged' 'system'
+            @removetimer 'healing' 
+          else
+            headmsg '(Healing crew)' 66
+            setalias 'hurt' crew[]  
+            break
+          endif
+        endif
+      endfor
     endif
   endif
   //
