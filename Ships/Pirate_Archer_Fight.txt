@@ -18,7 +18,11 @@
 //
 // *IMPORTANT*
 //
-// Every time you spawn new crew (summon) - you have to re-assign.
+// Every time you spawn new crew (summon) - you have:
+// 1) Go to Macros Tab
+// 2) Click Active Objects
+// 3) Clear Active Objects
+// 4) Re-run macro
 //
 // How to use?
 // -----------
