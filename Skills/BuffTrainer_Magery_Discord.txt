@@ -310,21 +310,19 @@ while not dead
         // INSERT TRAINING SEQUENCE HERE
         //
         // START > 
-        if skill 'peacemaking' < 120
-            @canceltarget
-	   	    // Use instrument
-		    @useobject 'instrument'
-	    	pause 1000
-	    	// anaconda
-            @findtype 0x15 'any' 'world' 0 10
-            useskill 'Discordance'
-            waitfortarget 5000
-            target! 'found'
-            pause 5100
-            if @injournal 'disrupting' 'system'
-                pause 6000
-                @clearjournal
-            endif
+        @canceltarget
+        // Use instrument
+        @useobject 'instrument'
+        pause 1000
+        // anaconda
+        @findtype 0x15 'any' 'world' 0 10
+        useskill 'Discordance'
+        waitfortarget 5000
+        target! 'found'
+        pause 5100
+        if @injournal 'disrupting' 'system'
+            pause 6000
+            @clearjournal
         endif
         msg "guards"
         // < END
