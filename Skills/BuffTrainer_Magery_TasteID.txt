@@ -10,12 +10,12 @@
 // 
 // How to use?
 // -----------
+// **Assuming you trained to 50**
 // 1) Mark a rune at a bank
 // 2) Mark a rune at a bird spawn
 // 3) Place both runes in your backpack
 // 4) Start at -bank-, with banker in sight
-// 5) Buy noob cheese, leave in pack
-// 6) Run script
+// 5) Run script
 //
 // Version 1.0
 // -----------
@@ -40,8 +40,7 @@
 //
 // Version 1.5
 // -----------
-// Bumped recall regs up to 50 from 10
-// Added double request for bank
+// Bumped recall regs to 50
 //
 // Version 1.6
 // -----------
@@ -54,7 +53,7 @@
 // UOSTEAM COPY-PASTE BELOW THIS LINE
 /////////////////////////////////////////////
 
-sysmsg "Buff Trainer Script - TasteID" 88
+sysmsg "Buff Trainer Script - Taste ID" 88
 sysmsg "Version 1.7" 88
 
 @useobject 'backpack'
@@ -78,6 +77,10 @@ if not findalias 'banker'
     sysmsg "Select the banker at your bank" 88
     promptalias 'banker'
 endif
+if not findalias 'ground'
+    sysmsg "Target the ground near you" 88
+    promptalias 'ground'
+endif
 
 //
 // Actions list
@@ -87,7 +90,7 @@ endif
 pushlist 'actions' 'restock'
 
 //
-// Script Regs
+// Script Regs (stocks 10)
 // 
 @removelist 'scriptregs'
 @createlist 'scriptregs'
@@ -96,6 +99,8 @@ pushlist 'scriptregs' 0xf7b // moss
 pushlist 'scriptregs' 0xf86 // root
 pushlist 'scriptregs' 0xf8c // ash
 
+msg "bank"
+pause 1000
 msg "bank"
 pause 1000
 
@@ -139,8 +144,10 @@ while not dead
 
         // check if we are at bank
         if @inrange 'banker' 30
-            msg "bank"
             resync
+            msg "bank"
+            pause 2000
+            msg "bank"
             pause 2000
             @useobject 'bankbag'
             pause 2000
@@ -240,14 +247,12 @@ while not dead
         //
         // INSERT TRAINING SEQUENCE HERE
         //
-        for 10
-            findtype 0x97d 'any' 'backpack'
-            useskill "Taste Identification"
-            waitfortarget 5000
-            target! 'found'
-            pause 1100
-        endfor
-        msg "guards"
+        // START > 
+        //
+        useskill 'Taste Identification'
+        waitfortarget 5000
+        target! 'ground'
+        pause 1000      
         // < END
         pushlist 'actions' 'train'
     endif
