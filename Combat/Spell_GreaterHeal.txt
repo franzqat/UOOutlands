@@ -60,6 +60,7 @@ endif
 if diffhits > 20
     cast 'Greater Heal'
     autotargetself
+    pause 2000
 else
     cast 'Greater Heal'
     waitfortarget 5000
