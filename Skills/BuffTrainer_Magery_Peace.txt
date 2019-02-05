@@ -14,7 +14,7 @@
 // -----------
 // 1) Mark a rune at a bank
 // 2) Mark a rune at a bird spawn
-// 3) Mark a rune where you want to train
+// 3) Mark a rune at anacondas as Prevalia Zoo
 // 4) Place all 3 runes in your backpack
 // 5) Review 'trainregs' list below to make sure it matches
 //    the spells you are training with.
@@ -115,6 +115,8 @@ msg "bank"
 pause 1000
 msg "bank"
 pause 1000
+
+@clearjournal
 
 while not dead
 
@@ -237,15 +239,22 @@ while not dead
         endwhile
         // get buff
         while not buffexists 'Arcane Empowerment'
-            @getenemy 'enemy' 'gray' 'criminal' next
-            if @inrange 'enemy' 12
-                if graphic 'enemy' == '0x6'
-                    @canceltarget
-                    cast 'Lightning'
-                    waitfortarget 5000
-                    target! 'enemy'
-                endif
-            endif
+            sysmsg "Looking for a bird to kill"
+            removelist 'birds'
+            createlist 'birds'
+            pushlist 'birds' '0x6'
+            @canceltarget
+            cast 'Lightning'
+            waitfortarget 5000
+            while @targetexists
+                for 0 to 'birds'
+                    if @findtype birds[] 'any' 'ground' 12
+                        target! 'found'
+                        @ignoreobject 'found'
+                    endif
+                    pause 100
+                endfor
+            endwhile
             pause 2000
         endwhile
         // mana to recall
@@ -293,9 +302,9 @@ while not dead
 		    @useobject 'instrument'
 	    	pause 1000
             useskill 'peacemaking'
-            waitfortarget 2000
-            // rock guar at zoo
-            target! 0x59c9c
+            @findtype 0x15 'any' 'world' 0 10
+            waitfortarget 5000
+            target! 'found'
             pause 5100
             if @injournal 'pacifying' 'system'
                 pause 6000
