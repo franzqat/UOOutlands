@@ -10,12 +10,14 @@
 // Version History:
 // * 1.0 initial release
 //
+// * 1.1 added journal reset
+//       added timer reset
+//
+// * 1.2 fixed issue with enabling Disarm
+//
 /////////////////////////////////////////////
 
-if not @timerexists 'disarm'
-  @createtimer 'disarm'
-  @settimer 'disarm' 60001
-endif
+@clearjournal
 @canceltarget
 @cleartargetqueue
 sysmsg "Select target"
@@ -25,7 +27,6 @@ waitfortarget 5000
 target! 'target'
 pause 500
 attack! 'target'
-warmode 'on'
 //
 // Herd
 //
@@ -37,14 +38,12 @@ endif
 //
 // Disarm check
 //
-if timer 'disarm' > 60000
-  if skill 'Arms Lore' >= 80
-    setability 'disarm' 
-    pause 500
-    // oops turned it off
-    if @injournal 'refrain' 'system'
-      setability 'disarm'
-    endif
-    @clearjournal
+if skill 'Arms Lore' >= 80
+  setability 'disarm' 
+  pause 500
+  // oops turned it off
+  if @injournal 'refrain' 'system'
+    setability 'disarm'
   endif
+  @clearjournal
 endif
