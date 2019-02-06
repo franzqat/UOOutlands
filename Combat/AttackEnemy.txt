@@ -1,0 +1,44 @@
+/////////////////////////////////////////////
+// UO Steam Attack Enemy Macro
+// for Outlands
+//
+// This macro _attacks_ your 'enemy' alias, running
+// a dress macro named 'default' before you do. Handy
+// for re-equipping disarmed weapons as fast as possible.
+//
+// Recommendation:
+// ===============
+// [MOUSEDOWN] = 'getenemy.txt'
+// [MOUSEUP] = 'attackenemy.txt'
+// 
+// How to use:
+// ===========
+// 1) Save your current equipment as 'default'
+//    in dress macro. 
+// 2) Run script any time to attack your current enemy.
+//
+// Version History:
+// * 1.0 initial release
+//
+/////////////////////////////////////////////
+
+//
+// run dress macro
+//
+dress 'default'
+
+//
+// check alias and attack
+//
+if @findobject 'enemy'
+    headmsg "*Attacking*" 22
+    autotargetobject! 'enemy'
+    attack! 'enemy'
+    if not war 'self'
+        warmode 'on'
+    endif
+else
+    headmsg "No targets" 44
+endif
+@clearusequeue
+@cancelautotarget
