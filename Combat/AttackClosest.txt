@@ -2,7 +2,12 @@
 // UO Steam Attack Closest Macro
 // for Outlands
 //
-// Notes:
+// This macro _attacks_ your closest target,
+// prioritizing targets by your color (red, blue).
+//
+// If you want to 'get' but not attack, use
+// GetClosest.txt macro instead. Personally,
+// I prefer a get script and an attack script.
 //
 // Outlands server does not support 'nearest'
 // or 'closest' filters, making this type of
@@ -11,22 +16,27 @@
 //
 // Version History:
 // * 1.0 initial release
+// * 1.1 removed timer
+//       updated for murderers
 //
 /////////////////////////////////////////////
 
 //
 // Run search loop for all targets and insert into list
-// This is a 1 second scan of everything around player
 // 
 @removetimer 'search'
 @createtimer 'search'
 @removelist 'found'
 @createlist 'found'
-while timer 'search' < 1000
+for 0 to 20
     @unsetalias 'enemy'
-    @getenemy 'enemy' 'gray' 'criminal' next
+    if murderer 'self'
+        getenemy 'murderer' 'innocent' 'enemy' 'criminal' 'gray' 'humanoid' 'transformation' 'random'
+    else
+        getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid' 'transformation' 'random'
+    endif
     @pushlist! 'found' 'enemy'
-endwhile
+endfor
 @removetimer 'search'
 
 //
@@ -67,7 +77,7 @@ endfor
 //
 // Attack if we see targets
 //
-if list 'targets' > 1
+if list 'targets' > 0
     headmsg "*Attacking*" 22
     setalias 'enemy' targets[0]
     if not war 'self'
