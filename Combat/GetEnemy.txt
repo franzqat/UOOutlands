@@ -9,7 +9,7 @@
 //
 // Recommendation:
 // ===============
-// [MOUSEDOWN] = 'getclosest.txt'
+// [MOUSEDOWN] = 'getenemy.txt'
 // [MOUSEUP] = 'attackenemy.txt'
 // 
 // Only use this if you have another script which

@@ -71,5 +71,8 @@ endif
 
 //
 // put equip back
+// (runs twice in case of lag)
 //
+dress 'default'
+pause 1000
 dress 'default'
