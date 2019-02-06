@@ -251,7 +251,7 @@ while not dead
         //
         useskill 'Taste Identification'
         waitfortarget 5000
-        target! 'ground'
+        targettile 'current'
         pause 1000      
         // < END
         pushlist 'actions' 'train'
