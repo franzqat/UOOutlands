@@ -1,63 +1,31 @@
 /////////////////////////////////////////////
 // UO Steam Lumber Macro
 // for Outlands
-// v1.1
 //
-// * equips axe and chops lumber
-// * detects overweight
-// * uses camping during lumber chop but on a different
-//   timer than the woodchopping since you cannot camp
-//   as fast as you can chop. 
-// * cuts one kindling with start dagger if it has none
-//   keeping 1 in pack at all times for the next camp
-// * weaves hiding into lumber and camping  - might be useful
-// * if you are full weight, you will be asked to unload. Its dangerous
-//   to overload yourself (cannot run from PKs or monsters). So either drop
-//   on ground or runner.
-// * script will check for 3 consecutive messages for no lumber, since you can 
-//   get one message from one tree, but be standing near another tree and be
-//   able to continue chopping without having to move.
+// * just chops wood, nothing else
+// 
+// Version 1.0
+// -----------
+// First release
 //
-// v1.2
-//
-// * converts logs to boards automatically
-// * will make kindling out of logs using a saw, if a saw is found. At first,
-//   when you have no boards, it will use dagger.
-//
-// [IMPORTANT! Make sure your wood craft source wood is 'Regular']
-//
-// v1.3
-//
-// * fixed launch kindling issue with saws
-//
-// v1.4
-//
-// * Removed dagger use to make kindling (was wasteful)
-//   Just use saws or dont do it at all
-//
-// [IMPORTANT! Make sure your wood craft source wood is 'Regular']
+// Version 1.1
+// -----------
+// Added PK detection and warnings. To use this
+// activate your tracking and set to [REDS]
 //
 /////////////////////////////////////////////
 
-//
-// Create camping timer
-//
-if not timerexists 'camping'
-    createtimer 'camping'
-endif
+sysmsg "UO Outlands Lumber script" 88
+sysmsg "Version 1.1" 88
 
-//
-// Create hiding timer
-//
-if not timerexists 'hiding'
-    createtimer 'hiding'
-endif
+@useobject 'backpack'
+pause 1000
 
 //
 // Clear hands
 //
 clearhands 'both'
-pause 1000
+pause 2000
 
 //
 // Create Messages list
@@ -69,6 +37,8 @@ pause 1000
 // While alive
 //
 while hits > 0
+
+    @clearjournal
 
     //
     // Check weight
@@ -101,8 +71,8 @@ while hits > 0
         endif
     endif
 
-    canceltarget
-    clearjournal
+    @canceltarget
+
 
     //
     // Chop Wood
@@ -116,60 +86,6 @@ while hits > 0
     // Convert logs into boards
     //
     @usetype '0x1bdd'  
-
-    //
-    // If working on camping skill
-    //
-    if skill 'camping' < 100
-        //
-        // Check if we need kindling, try to use saw
-        //
-        if counttype 0xde1 '0' 'backpack' < 1
-            //
-            // If we have a saw
-            //
-            if @findtype 0x1034 'any' 'backpack'
-                //
-                // If we have boards
-                //
-                if @counttype 0x1bd7 0 'backpack' > 0
-                    @usetype 0x1034 'any' 'backpack'
-                    pause 1000
-                    replygump 0x38920abd 100
-                    pause 1000
-                    replygump 0x38920abd 200
-                    pause 1000
-                    replygump 0x38920abd 0
-                    pause 1000
-                    replygump 0x38920abd 0
-                    pause 1000
-                    replygump 0x38920abd 0
-                    pause 1000
-                endif
-            endif
-        endif
-
-        //
-        // Camp once every 3 seconds
-        //
-        if timer 'camping' > 3000
-            if @findtype 0xde1 'any' 'backpack'
-                useobject 'found'
-                settimer 'camping' 0
-            endif
-        endif
-
-    endif
-
-    //
-    // Try to hide every 11 seconds
-    //
-    if skill 'hiding' < 100
-        if timer 'hiding' > 11000
-            useskill 'hiding'
-            settimer 'hiding' 0
-        endif
-    endif
 
     //
     // Wait for results
@@ -203,6 +119,18 @@ while hits > 0
         removelist 'Messages'
         createlist 'Messages'
         pause 3000
+    endif
+
+    // 
+    // PK Detect 
+    //
+    if @injournal "now tracking" 'system'
+        for 10
+            sysmsg 'Murderer incoming' 33
+            headmsg 'Murderer incoming' 33
+            pause 200
+            stop
+        endfor
     endif
 
 endwhile
