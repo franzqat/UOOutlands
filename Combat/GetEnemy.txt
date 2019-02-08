@@ -33,6 +33,11 @@
 /////////////////////////////////////////////
 
 //
+// Unset your current enemy
+//
+@unsetalias 'enemy'
+
+//
 // Run search loop for all targets and insert into list
 // 
 @removetimer 'search'
