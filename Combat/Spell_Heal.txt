@@ -60,6 +60,7 @@ endif
 if diffhits > 20
     cast 'Heal'
     autotargetself
+    pause 2000
 else
     cast 'Heal'
     waitfortarget 5000
@@ -70,8 +71,7 @@ endif
 
 //
 // put equip back
-// (runs twice in case of lag)
 //
 dress 'default'
-pause 1000
-dress 'default'
+while dressing
+endwhile

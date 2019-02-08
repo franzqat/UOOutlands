@@ -14,12 +14,26 @@
 // macro very difficult. However, we can work
 // around that (below).
 //
+// How to use:
+// ===========
+// 1) Save your current equipment as 'default'
+//    in dress macro. 
+// 2) Run script any time to attack your current enemy.
+//
 // Version History:
 // * 1.0 initial release
 // * 1.1 removed timer
 //       updated for murderers
+// * 1.2 added dress
 //
 /////////////////////////////////////////////
+
+//
+// run dress macro
+//
+dress 'default'
+while dressing
+endwhile
 
 //
 // Run search loop for all targets and insert into list
