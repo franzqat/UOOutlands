@@ -255,7 +255,7 @@ while not dead
         @useobject 'found'
         removetimer 'tool'
         createtimer 'tool'
-		waitforgump 'found' 5000
+        waitforgump 'found' 5000
         replygump 'found' 7
         // max 10s attempt, in case of server lag
         while timer 'tool' < 10000
