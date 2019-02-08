@@ -1,5 +1,5 @@
 /////////////////////////////////////////////
-// UO Steam Get Closest Macro
+// UO Steam Get Closest Enemy Macro
 // for Outlands
 //
 // This macro _gets_ your closest target,
@@ -17,8 +17,18 @@
 // a script which gets and attacks, use the 
 // 'attackclosest.txt' script.
 //
+// IMPORTANT
+// =========
+// Customize the filter on what you want to target.
+// Blue PVM = 'murderer' 'enemy' 'criminal' 'gray'
+// Blue PVP = 'murderer' 'enemy' 'criminal' 'gray' 'humanoid'
+// Red PVP = 'murderer' 'innocent' 'enemy' 'criminal' 'gray' 'humanoid'
+//
+// You need to customize your targets and priority for how you want to play.
+//
 // Version History:
 // * 1.0 initial release
+// * 1.1 performance fixes, lots of notes, enemy highlight
 //
 /////////////////////////////////////////////
 
@@ -31,11 +41,7 @@
 @createlist 'found'
 for 0 to 20
     @unsetalias 'enemy'
-    if murderer 'self'
-        getenemy 'murderer' 'innocent' 'enemy' 'criminal' 'gray' 'humanoid' 'transformation' 'random'
-    else
-        getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid' 'transformation' 'random'
-    endif
+    @getenemy 'murderer' 'enemy' 'criminal' 'gray' 'next'
     @pushlist! 'found' 'enemy'
 endfor
 @removetimer 'search'
@@ -80,7 +86,10 @@ endfor
 //
 if list 'targets' > 0
     headmsg "*Ready*" 22
-    setalias 'enemy' targets[0]
+    @unsetalias 'enemy'
+    @setalias 'enemy' targets[0]
+    // Leave out ampersand on this one
+    getenemy 'enemy'
 else
     headmsg "No targets" 44
 endif
