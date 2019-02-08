@@ -2,23 +2,25 @@
 // UO Steam Attack Closest Macro
 // for Outlands
 //
-// This macro _attacks_ your closest target,
-// prioritizing targets by your color (red, blue).
+// This macro _attacks_ your closest target.
 //
 // If you want to 'get' but not attack, use
-// GetClosest.txt macro instead. Personally,
+// 'GetEnemy.txt' macro instead. Personally,
 // I prefer a get script and an attack script.
 //
-// Outlands server does not support 'nearest'
-// or 'closest' filters, making this type of
-// macro very difficult. However, we can work
-// around that (below).
+// IMPORTANT
+// =========
+// Customize the filter on what you want to target.
+// Blue PVM = 'murderer' 'enemy' 'criminal' 'gray' 'next'
+// Blue PVP = 'murderer' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
+// Red PVP = 'murderer' 'innocent' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
 //
 // How to use:
 // ===========
 // 1) Save your current equipment as 'default'
 //    in dress macro. 
-// 2) Run script any time to attack your current enemy.
+// 2) Figure out what filter you want
+// 3) Run script any time to attack your current enemy.
 //
 // Version History:
 // * 1.0 initial release
@@ -38,20 +40,13 @@ endwhile
 //
 // Run search loop for all targets and insert into list
 // 
-@removetimer 'search'
-@createtimer 'search'
 @removelist 'found'
 @createlist 'found'
 for 0 to 20
     @unsetalias 'enemy'
-    if murderer 'self'
-        getenemy 'murderer' 'innocent' 'enemy' 'criminal' 'gray' 'humanoid' 'transformation' 'random'
-    else
-        getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid' 'transformation' 'random'
-    endif
+    @getenemy 'murderer' 'enemy' 'criminal' 'gray' 'next'
     @pushlist! 'found' 'enemy'
 endfor
-@removetimer 'search'
 
 //
 // Create a distances list, seeding from 1
@@ -93,11 +88,13 @@ endfor
 //
 if list 'targets' > 0
     headmsg "*Attacking*" 22
-    setalias 'enemy' targets[0]
     if not war 'self'
       warmode 'on'
     endif
-    attack! targets[0]
+    setalias 'enemy' targets[0]
+    // Leave out ampersand on this one
+    getenemy 'enemy'
+    attack! 'targets[0]'
 else
     headmsg "No targets" 44
 endif

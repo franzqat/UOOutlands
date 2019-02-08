@@ -2,29 +2,27 @@
 // UO Steam Get Closest Enemy Macro
 // for Outlands
 //
-// This macro _gets_ your closest target,
-// prioritizing targets by your color (red, blue),
-// and sets that target to alias 'enemy'. Recommend
-// you pair this script with 'attackenemy.txt'
+// This macro _gets_ your closest target. Make sure to 
+// bind script 'AttackEnemy.txt' to another key.
 //
 // Recommendation:
 // ===============
 // [MOUSEDOWN] = 'getenemy.txt'
 // [MOUSEUP] = 'attackenemy.txt'
 // 
-// Only use this if you have another script which
-// actually attacks your 'enemy' alias. If you want
-// a script which gets and attacks, use the 
-// 'attackclosest.txt' script.
-//
 // IMPORTANT
 // =========
 // Customize the filter on what you want to target.
-// Blue PVM = 'murderer' 'enemy' 'criminal' 'gray'
-// Blue PVP = 'murderer' 'enemy' 'criminal' 'gray' 'humanoid'
-// Red PVP = 'murderer' 'innocent' 'enemy' 'criminal' 'gray' 'humanoid'
+// Blue PVM = 'murderer' 'enemy' 'criminal' 'gray' 'next'
+// Blue PVP = 'murderer' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
+// Red PVP = 'murderer' 'innocent' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
 //
-// You need to customize your targets and priority for how you want to play.
+// How to use:
+// ===========
+// 1) Save your current equipment as 'default'
+//    in dress macro. 
+// 2) Figure out what filter you want
+// 3) Run script any time to get an enemy.
 //
 // Version History:
 // * 1.0 initial release
@@ -40,8 +38,6 @@
 //
 // Run search loop for all targets and insert into list
 // 
-@removetimer 'search'
-@createtimer 'search'
 @removelist 'found'
 @createlist 'found'
 for 0 to 20
@@ -49,7 +45,6 @@ for 0 to 20
     @getenemy 'murderer' 'enemy' 'criminal' 'gray' 'next'
     @pushlist! 'found' 'enemy'
 endfor
-@removetimer 'search'
 
 //
 // Create a distances list, seeding from 1
