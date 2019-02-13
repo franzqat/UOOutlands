@@ -324,7 +324,6 @@ while not dead
             waitfortarget 5000
             target! 'found'
         endif
-        msg "guards"
         // < END
         pushlist 'actions' 'train'
     endif
