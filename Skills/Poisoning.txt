@@ -18,11 +18,15 @@
 // -----------
 // First release! yay!
 //
+// Version 2.0
+// -----------
+// Added health checks and heals
+//
 // UOSTEAM COPY-PASTE BELOW THIS LINE
 /////////////////////////////////////////////
 
 sysmsg "Poisoning Script" 88
-sysmsg "Version 1.0" 88
+sysmsg "Version 1.1" 88
 //
 // Open backpack
 //
@@ -138,6 +142,22 @@ while not dead
             break
         endif
     endwhile
+
+    //
+    // Heal
+    //
+    while diffhits > 20
+        if skill 'magery' > 60
+            bigheal 'self'
+            pause 2000
+        endif
+        if skill 'healing' > 60
+            bandageself!
+            pause 20000
+        endif
+        pause 5000
+    endwhile
+
     //
     // Skill cooldown
     //
