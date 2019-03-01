@@ -54,7 +54,7 @@
 // UOSTEAM COPY-PASTE BELOW THIS LINE
 /////////////////////////////////////////////
 
-sysmsg "Buff Trainer Script - Hiding 88
+sysmsg "Buff Trainer Script - Stealth 88
 sysmsg "Version 1.7" 88
 
 @useobject 'backpack'
@@ -246,8 +246,13 @@ while not dead
         //
         // START > 
         //
-        useskill 'Hiding'
-        pause 10500        
+		if not hidden 'self'
+			useskill "hiding"
+			pause 11000
+		else
+			useskill "stealth"
+			pause 11000
+		endif    
         // < END
         pushlist 'actions' 'train'
     endif
