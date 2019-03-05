@@ -1,3 +1,5 @@
+Updated 25/02/2019
+
 
  This macro sets out to automate the task of leveling taming
 
@@ -25,3 +27,19 @@
 
  Why does the bandage not complete on my tank pet?
  The script was written with 100 Dex in mind, you will need to edit the heal portions with a pause which is long enough for your bandage timer.
+
+ Where should I tame?
+ From my own experience (1x 120 Tamer and 2x GM Tamer) follow the below guide; I try to find isolated spawns with fairly set spawn tiles
+
+Shallow Water (50.0 - 52.5) - Find a quiet isolated spawn on the coast, plenty to choose from
+Sand Crab (55.0 - 70.0) - East of Prevalia Zoo, there's a single spawn - I camp this for a couple of days to 70 (this also gets dex skills to GM in this time)
+Scarab (70.0 - 72.5) - Oasis south of Ossuary
+Drake Whelp (75.0 - 77.5) - I find the north corner as soon as you get into level2 is quietest, your pet will need to tank the drake also
+Bullvore (80.0 - 82.5) - Inferno has a couple of isolated spawns, much easier to macro than in the desert.
+Drake (85.0 - 87.5) - Same spot as drake whelps
+Husk Crab (90.0 - 92.5) - South of Prevalia at the ship wreck. I tend to go to the further spawns as people don't usually venture that far in
+Molten Mongbat (95.0 - 97.5) Inferno, Level 2 has a fairly quiet spawn just as you enter. I find reds ignore you if you're naked (most of the time)
+Snow Drift (100.0 - 102.5) - Ice Fortress, some fairly decent isolated spawns. 
+Earth Drake (105.0 - 107.5) - Back side of Mount Petram Level 3.
+Aegis Minion (110.0 - 112.5) - there's a room South West with an aegis imp, slime and minion. Afk in a corner and let your pet offtank everything.
+Earth Dragon (115.0 - 117.5) - Same spot as drakes, back of petram
