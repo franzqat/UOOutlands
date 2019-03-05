@@ -1,0 +1,27 @@
+
+ This macro sets out to automate the task of leveling taming
+
+ Things required?
+ a tank pet (I recommend a Rock Guar), Veterinary (Can be dropped once GM Taming)a LOT of bandages.
+
+ What does it do?
+ It will look for certain graphics and tame them, once tamed it will rename them to 'killme' and proceed to kill the pet
+ Dex skills are not required to kill the tame, but helps. If you are going for a magery build - I suggest having one or two pets
+ to assist in killing the tamed pet. Ensure your kill pets + tank pet + tamed pet do not exceed the follower count, otherwise
+ they will not obey your commands to kill the freshly tamed pet.
+
+ How do I use it?
+ This works very well for single spawns of tames, without any other additional creatures to potentially aggro you
+ This is achieved by setting your tank pet in a position where any spawned monsters will be closer to your pet than you.
+ Command it to stop, and stand one tile behind/diagonal to it, to ensure that anything that spawns will target your pet
+ Where do you suggest I tame these?
+ Low traffic areas are best, however in some cases such as Molten Mongbats and Bullvores, their spawns are much easier in dungeons to deal with
+
+ Do I have to tame these creatures?
+ No. Feel free to change any graphics to whatever you prefer. I have leveled three tamers with this macro, and have merely placed suggestions to help those who might need it. :)
+
+ Why do Sand Crabs have a very large skill gain window listed?
+ Due to these being a very passive creature, and in some very out of the way areas, I find these are worth macroing on over a couple of days. This will GM anat/tactics/weaponskill very quickly, as taming a creature gives Active Skill Bonus. Feel free to ignore this suggestion if you want to go slightly faster.
+
+ Why does the bandage not complete on my tank pet?
+ The script was written with 100 Dex in mind, you will need to edit the heal portions with a pause which is long enough for your bandage timer.

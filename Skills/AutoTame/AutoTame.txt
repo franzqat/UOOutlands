@@ -1,0 +1,144 @@
+// AutoTame v1.0
+// Written by: a rideable llama
+//
+// This macro sets out to automate the task of leveling taming
+//
+// Things required?
+// a tank pet (I recommend a Rock Guar), Veterinary (Can be dropped once GM Taming)a LOT of bandages.
+//
+// What does it do?
+// It will look for certain graphics and tame them, once tamed it will rename them to 'killme' and proceed to kill the pet
+// Dex skills are not required to kill the tame, but helps. If you are going for a magery build - I suggest having one or two pets
+// to assist in killing the tamed pet. Ensure your kill pets + tank pet + tamed pet do not exceed the follower count, otherwise
+// they will not obey your commands to kill the freshly tamed pet.
+//
+// Why do I need to create two macros?
+// For some reason, I couldn't get the killme part of the macro to run, unless the macro is stopped and restarted, the second
+// macro is merely a way to quit out of the macro and start it fresh, for some reason the 'replay' and 'loop' functions don't
+// allow the kill portion to run
+//
+// How do I use it?
+// This works very well for single spawns of tames, without any other additional creatures to potentially aggro you
+// This is achieved by setting your tank pet in a position where any spawned monsters will be closer to your pet than you.
+// Command it to stop, and stand one tile behind/diagonal to it, to ensure that anything that spawns will target your pet
+//Where do you suggest I tame these?
+//Low traffic areas are best, however in some cases such as Molten Mongbats and Bullvores, their spawns are much easier in dungeons to deal with
+//
+//Do I have to tame these creatures?
+//No. Feel free to change any graphics to whatever you prefer. I have leveled three tamers with this macro, and have merely placed suggestions to help those who might need it. :)
+//
+//Why do Sand Crabs have a very large skill gain window listed?
+//Due to these being a very passive creature, and in some very out of the way areas, I find these are worth macroing on over a couple of days. This will GM anat/tactics/weaponskill very quickly, as taming a creature gives Active Skill Bonus. Feel free to ignore this suggestion if you want to go slightly faster.
+////////////////
+//Define the tank pet
+if not listexists 'tankpet'
+  sysmsg 'Please select your tanking pet
+  promptalias 'Tankpet'
+  createlist 'Tankpet'
+endif
+//Clear taming alias
+@cleartargetqueue
+@unsetalias 'pet'
+@createlist 'pets'
+@clearlist 'pets'
+//Heals pet even if there's no tame target (just in case something else aggros)
+if maxhits 'Tankpet' > diffhits 'Tankpet'
+  if inrange 'Tankpet' 1
+    headmsg 'Healing Tankpet'
+    bandage
+    autotargetobject 'Tankpet'
+    pause 6000
+  endif
+endif
+//Clears target queue from previous heal
+@cleartargetqueue
+//Define graphics of the pets you wish to tame
+//Shallow Water (50.0 - 52.5)
+pushlist 'pets' 0x33
+//Sand Crab (55.0 - 70.0)
+pushlist 'pets' 0x2d9
+//Cave Bear (60.0 - 62.5)
+pushlist 'pets' 0xd5
+//Carrion Beetle (65.0 - 67.5)
+pushlist 'pets' 0xa9
+//Scarab (70.0 - 72.5)
+pushlist 'pets' 0xa9
+//Drake Whelp (75.0 - 77.5)
+pushlist 'pets' 0x2ce
+//Bullvore (80.0 - 82.5)
+pushlist 'pets' 0x2cb
+//Drake (85.0 - 87.5)
+pushlist 'pets' 0x3c
+pushlist 'pets' 0x3d
+//Husk Crab (90.0 - 92.5)
+pushlist 'pets' 0x2d9
+//Molten Mongbat (95.0 - 97.5)
+pushlist 'pets' 0x27
+//Snow Drift (100.0 - 102.5)
+pushlist 'pets' 0x33
+//Earth Drake (105.0 - 107.5)
+pushlist 'pets' 0x3c
+pushlist 'pets' 0x3d
+//Aegis Minion (110.0 - 112.5)
+pushlist 'pets' 0x308
+//Earth Dragon (115.0 - 117.5)
+pushlist 'pets' 0x3a
+pushlist 'pets' 0x3b
+// Search
+if not @findobject 'pet'
+  for 0 to 'pets'
+    if @findtype 'pets[]' 'any' 'ground'
+      @setalias 'pet' 'found'
+      break
+    endif
+  endfor
+endif
+// tame
+if @inrange 'pet' 7
+  headmsg 'Taming Pet'
+  clearjournal
+  useskill 'animal taming'
+  waitfortarget 1000
+  target! 'pet'
+  pause 1000
+  // wait for tame, heal tank pet
+  while name 'pet' != 'killme'
+    useskill 'animal taming'
+    waitfortarget 1000
+    target! 'pet'
+    pause 1000
+    if maxhits 'Tankpet' > diffhits 'Tankpet'
+      if inrange 'Tankpet' 1
+        headmsg 'Healing Tankpet'
+        bandage
+        autotargetobject 'Tankpet'
+        pause 6000
+        bandage
+        autotargetobject 'Tankpet'
+      endif
+    endif
+    pause 6000
+    @rename 'pet' 'killme'
+  endwhile
+  // kill
+  while target 'pet' name 'killme'
+    headmsg 'Killing Pet'
+    msg "all kill"
+    waitfortarget 5000
+    target! 'pet'
+    attack! 'pet'
+    pause 5000
+    if maxhits 'Tankpet' > diffhits 'Tankpet'
+      if inrange 'Tankpet' 1
+        headmsg 'Healing Tankpet'
+        bandage
+        autotargetobject 'Tankpet'
+        pause 6100
+      endif
+    endif
+    playmacro 'AutoTame2'
+    @unsetalias 'pet'
+    pause 1000
+  endwhile
+endif
+@unsetalias 'pet'
