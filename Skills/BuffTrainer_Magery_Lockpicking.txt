@@ -210,15 +210,22 @@ while not dead
         endwhile
         // get buff
         while not buffexists 'Arcane Empowerment'
-            @getenemy 'enemy' 'gray' 'criminal' next
-            if @inrange 'enemy' 12
-                if graphic 'enemy' == '0x6'
-                    @canceltarget
-                    cast 'Lightning'
-                    waitfortarget 5000
-                    target! 'enemy'
-                endif
-            endif
+            sysmsg "Looking for a bird to kill"
+            removelist 'birds'
+            createlist 'birds'
+            pushlist 'birds' '0x6'
+            @canceltarget
+            cast 'Lightning'
+            waitfortarget 5000
+            while @targetexists
+                for 0 to 'birds'
+                    if @findtype birds[] 'any' 'ground' 12
+                        target! 'found'
+                        @ignoreobject 'found'
+                    endif
+                    pause 100
+                endfor
+            endwhile
             pause 2000
         endwhile
         // mana to recall
