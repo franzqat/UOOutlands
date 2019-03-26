@@ -14,6 +14,12 @@
 // -----------
 // First release
 //
+// Version 1.1
+// -----------
+// Added a missing sign type (sorry!)
+// Added a 'click' message. This will help you know when you are
+//      going through areas you already have checked.
+//
 // UOSTEAM COPY-PASTE BELOW THIS LINE
 /////////////////////////////////////////////
 
@@ -21,6 +27,7 @@
 @removelist 'signtypes'
 @createlist 'signtypes'
 // UO SIGN TYPES
+pushlist 'signtypes' 0xbd1 // default
 pushlist 'signtypes' 0xbd2 // default
 pushlist 'signtypes' 0xbc2 // diamond
 pushlist 'signtypes' 0xbcc // torch
@@ -97,20 +104,19 @@ while hits > 0
         @clearjournal
         if @findtype signtypes[] 'any' 'ground' 1 16
             clickobject 'found'
+	    	headmsg 'click'
             pause 500
             if @injournal 'fairly' 'system'
                 headmsg "FAIRLY WORN" 25
-                @ignoreobject 'found'
             endif
             if @injournal 'greatly' 'system'
                 headmsg "GREATLY WORN" 25
-                @ignoreobject 'found'
             endif
             if @injournal 'collap' 'system'
                 headmsg "IDOC!!! IDOC!!!" 25
-                @ignoreobject 'found'
             endif
+            @ignoreobject 'found'
         endif
     endfor
-    pause 1000
+    pause 200
 endwhile
