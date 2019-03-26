@@ -2,7 +2,9 @@
 // UO Steam Get Closest Enemy Macro
 // for Outlands
 //
-// This macro _gets_ your closest target. Make sure to 
+// This macro _gets_ your closest target by a filter you set (below) and sets
+// your UOSteam alias 'enemy' to that target. It does not attack it, it only
+// sets the alias. You will need another macro to actually attack. Make sure to 
 // bind script 'AttackEnemy.txt' to another key.
 //
 // Recommendation:
@@ -14,8 +16,8 @@
 // =========
 // Customize the filter on what you want to target.
 // Blue PVM = 'murderer' 'enemy' 'criminal' 'gray' 'next'
-// Blue PVP = 'murderer' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
-// Red PVP = 'murderer' 'innocent' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
+// Blue PVP = 'murderer' 'enemy' 'criminal' 'red' 'grey' 'humanoid' 'next'
+// Red PVP = 'murderer' 'enemy' 'innocent' 'criminal' 'red' 'grey' 'humanoid' 'next'
 //
 // How to use:
 // ===========
@@ -25,8 +27,14 @@
 // 3) Run script any time to get an enemy.
 //
 // Version History:
+// ----------------
 // * 1.0 initial release
 // * 1.1 performance fixes, lots of notes, enemy highlight
+// * 1.2 added dress check
+//
+// Notes:
+// ------
+// 'transformation' filter is not needed on UO Outlands.
 //
 /////////////////////////////////////////////
 
@@ -34,6 +42,13 @@
 // Unset your current enemy
 //
 @unsetalias 'enemy'
+
+//
+// run dress macro
+//
+dress 'default'
+while dressing
+endwhile
 
 //
 // Run search loop for all targets and insert into list
