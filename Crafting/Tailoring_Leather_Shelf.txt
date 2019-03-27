@@ -16,7 +16,12 @@
 //
 // Version 1.0
 // -----------
-// * 
+// * Initial version
+//
+// Version 2.0
+// -----------
+// * Lol OK, now it works. Tried to make without a shelf and didn't understand
+//   how shelves worked. Tested now with an actual shelf.
 //
 // Remember, if you change shelves, clear active objects first.
 //
@@ -180,8 +185,11 @@ while list 'make' > 0
                 //
                 // Shelf it
                 //
-                moveitem 'found' 'Shelf'
                 headmsg '*Exceptional*' 55
+                waitforcontext 'Shelf' 0 5000
+                waitfortarget 5000
+                target! 'self'
+                pause 500
                 // 
                 // Pop it
                 //
