@@ -87,8 +87,10 @@ while not dead
   //
   if poisoned and @findtype! 0xf07 0 'backpack'
     headmsg "[Cure] Potion" 194
-    useobject! 'found'
+    clearhands 'right'
     pause 1000
+    useobject! 'found'
+    pause 2000
   endif
   //
   // Heals
@@ -96,8 +98,10 @@ while not dead
   if diffhits > 60 and not poisoned 
     if @findtype 0xf0c 0 'backpack'
         headmsg "[Heal] Potion" 53
-        useobject! 'found'
+        clearhands 'right'
         pause 1000
+        useobject! 'found'
+        pause 2000
     endif
   endif
   //
