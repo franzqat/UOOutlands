@@ -3,73 +3,59 @@
 // for Outlands
 // by Jewele
 // 
-// Heals you and nearby crew, arms your bow, attacks nearest grey,
-// begs your crew if you have the skill, throws explosions if you 
-// have them in your pack.
-//
 // This script was made to allow me to focus on firing cannons,
 // positioning ship, and micro-managing the other tasks in ship
 // PvM without worrying about having to attack or heal crew.
+// This is the parry dexxer version so  make sure your weapon 
+// and shield are equipped when you run it.
 //
-// UO Steam in Outlands has disabled ability to query health
-// for anything but yourself and pets. Therefore, the script
-// attempts to bandage crew near you, and if they need a heal,
-// keeps bandaging same target. If not, moves to next one.
+// What does it do?
+// * Heals you and nearby crew
+// * Attacks nearest grey
+// * Begs your crew if you have the skill
+// * Throws explosions if you have them in your pack. 
+// * Taunts every 30 seconds
 //
-// *IMPORTANT*
-//
-// Every time you spawn new crew (summon) - you have:
-// 1) Go to Macros Tab
-// 2) Click Active Objects
-// 3) Clear Active Objects
-// 4) Re-run macro
 //
 // How to use?
 // -----------
-// 1) Run script
-// 2) Select all crew members
-// 3) As long as those exact crew stay on ship, you can run 
-//    script any time to heal them.
-// 4) Stay near injured crew to heal them
+// 1) Save a dress profile named 'default' with your equipment
+// 2) Run script
+// 3) Stay near injured crew to heal them
 //
 // Important Notes
 // ---------------
 // * The script will pause if you have an active target up. This 
 //   assumes you are firing your cannons, etc.
-// * Remember if you send crew below decks, you need to re-target
-//   them when they come back up. Crew are spawned with new IDs
-//   every time.
+// * The script has no idea which crew are lower health than other.
+//   This is a UO Steam limitation on this server - can't do it.
+//   If you have a certain crew member near death, manually heal them.
 //
-// Version 1.0
+// Versions
 // -----------
-// First release! yay! 
+// 1.0 - First release! yay! 
+// 1.1 - Removed need to save crew each time
 //
 // UOSTEAM COPY-PASTE BELOW THIS LINE
 /////////////////////////////////////////////
 
 @clearjournal
 @unsetalias 'hurt'
-if not listexists 'crew'
-    sysmsg "When prompted select crewman after another" 88
-    sysmsg "When all crew are selected, press ESC" 88
-    @createlist 'crew'
-    //
-    // Maximum 5
-    //
-    for 10
-        sysmsg "Select next crew" 88
-        promptalias 'crewman'
-        if @findobject 'crewman'
-            pushlist 'crew' 'crewman'
-            sysmsg "Your crewman has been saved, press ESC if you have no more crew" 44
-        else
-            break
-        endif
-    endfor
-    sysmsg "Thank you, crew saved, script is ready" 44
-endif
+@removelist 'crew'
+@createlist 'crew'
 
 while not dead
+
+  //
+  // Get crew
+  //
+  @clearlist 'crew'
+  while @findtype 0x190 'any' 'ground' '2' or @findtype 0x191 'any' 'ground' '2'
+    @pushlist! 'crew' 'found'
+    @ignoreobject 'found'
+  endwhile
+  @clearignorelist
+
   //
   // Script indicator for player
   //
@@ -81,21 +67,6 @@ while not dead
     headmsg "(active target)" 66
     pause 1000
     replay
-  endif
-  //
-  // arm bow/crossbow
-  //
-  if not @findlayer 'self' 1
-    // xbow
-    @findtype 0xf50 'any' 'backpack'
-    @equipitem 'found' 1
-    // heavy xbow
-    @findtype 0x13fd 'any' 'backpack'
-    @equipitem 'found' 1
-    // bow
-    @findtype 0x13b2 'any' 'backpack'
-    @equipitem 'found' 1
-    pause 1000
   endif
   //
   // low bandages check
@@ -111,6 +82,30 @@ while not dead
     headmsg "Low on bandages" 38
     pause 100
   endif
+  //
+  // Cures
+  //
+  if poisoned and @findtype! 0xf07 0 'backpack'
+    headmsg "[Cure] Potion" 194
+    useobject! 'found'
+    pause 1000
+  endif
+  //
+  // Heals
+  //
+  if diffhits > 60 and not poisoned 
+    if @findtype 0xf0c 0 'backpack'
+        headmsg "[Heal] Potion" 53
+        useobject! 'found'
+        pause 1000
+    endif
+  endif
+  //
+  // run dress macro
+  //
+  dress 'default'
+  while dressing
+  endwhile
   //
   // attack enemy near you
   //
@@ -150,7 +145,7 @@ while not dead
   //
   if not @timerexists 'healing'
     // 
-    // if hurt healed crew is nearby
+    // if last healed crew exists and is close
     //
     if findalias 'hurt' and @inrange 'hurt' 2
       @clearjournal
@@ -194,7 +189,7 @@ while not dead
       removetimer 'explosion'
     endif
   else
-    if @inrange 'enemy' 15
+    if @inrange 'enemy' 12
       if not @inrange 'enemy' 6
         if counttype 0xf0d 'any' 'backpack' > 0
           findtype 0xf0d 'any' 'backpack' > 0
@@ -226,6 +221,24 @@ while not dead
         target! 'friend'
         createtimer 'begging'
       endif
+    endif
+  endif
+  //
+  // Taunt
+  //
+  if @timerexists 'taunt'
+    //
+    // reset after 30
+    //
+    if timer 'taunt' > 30000
+      removetimer 'taunt'
+    endif
+  else
+    if @findobject 'lefthand'
+      @useobject 'found'
+      waitfortarget 5000
+      target! 'self'
+      createtimer 'taunt'
     endif
   endif
   pause 1000
