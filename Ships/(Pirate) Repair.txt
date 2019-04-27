@@ -45,8 +45,10 @@ while not dead
   //
   @clearlist 'crew'
   while @findtype 0x190 'any' 'ground' '2' or @findtype 0x191 'any' 'ground' '2'
-    @pushlist! 'crew' 'found'
-    @ignoreobject 'found'
+    if friend 'found'
+      @pushlist! 'crew' 'found'
+      @ignoreobject 'found'
+    endif
   endwhile
   @clearignorelist
 
