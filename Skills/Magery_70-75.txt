@@ -136,13 +136,12 @@ while not dead
         msg "guards"
         pushlist 'actions' 'train'
     endif
-    pause 200
 
     //
     // Server save fix
     // 
-    if @injournal 'server will save' 'system'
-      sysmsg 'pausing for server save' 44
+    if @injournal 'world will save' 'system'
+      sysmsg 'pausing for world save' 44
       pause 30000
       @clearjournal
     endif
@@ -156,5 +155,7 @@ while not dead
     endif
 
     pushlist 'actions' 'train'
+
+    pause 1000
 
 endwhile

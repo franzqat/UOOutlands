@@ -15,9 +15,19 @@
 // 4) Start at -bank-, with banker in sight
 // 5) Run script
 //
+// Script not running?
+//
+//    Clear your aliases. Go to Macros-Active Objects, and clear 
+//    all Active Objects. 
+//
+// Script buggy?
+//
+//    DO NOT share profiles between characters, it will confuse
+//    the aliases.
+//
 // Version 2.0
 // -----------
-// Removed ASG check and bird kill
+// Rewrite for asg removal
 //
 // UOSTEAM COPY-PASTE BELOW THIS LINE
 /////////////////////////////////////////////
@@ -217,11 +227,25 @@ while not dead
         pushlist 'actions' 'train'
     endif
 
-    pause 200
-
     //
     // Server save fix
     // 
+    if @injournal 'world will save' 'system'
+      sysmsg 'pausing for world save' 44
+      pause 30000
+      @clearjournal
+    endif
+
+    //
+    // skill check
+    //
+    if skill 'Magery' == 85
+      headmsg "Im done" 93
+      stop
+    endif
+
     pushlist 'actions' 'train'
+
+    pause 1000
 
 endwhile
