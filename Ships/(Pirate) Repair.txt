@@ -181,7 +181,7 @@ while not dead
   //
   // Repair ship
   //
-  @usetype 0x649e 'any' 'backpack'
+  msg "[repair"
   waitforgump 0x4bcb6173 2000
   @replygump 0x4bcb6173 2
   waitforgump 0x4bcb6173 2000
