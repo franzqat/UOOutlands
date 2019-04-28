@@ -1,0 +1,82 @@
+/////////////////////////////////////////////
+// UO Steam Training Script
+// for Outlands
+// by Jewele
+// 
+// Magery 50-60 trainer. The fastest way to train
+// magery from 50-60 is to take healing, whether
+// you intend to keep it or not, run to Shelter Island
+// dungeon and cast Lightning on yourself.
+// 
+// How to use?
+// -----------
+// 1) Train healing to 50
+// 2) Stock bandages
+// 3) Stock regs
+// 4) Go to Starter Dungeon
+// 5) Run script
+//
+// Version 2.0
+// -----------
+// Rewrite for asg removal
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+
+sysmsg "Magery Trainer Script 50-60" 88
+sysmsg "Version 2.0" 88
+
+@useobject 'backpack'
+pause 1000
+
+while not dead
+
+  //
+  // Bandage check
+  //
+  if @counttype '0xe21' 'any' 'backpack' == 0
+    sysmsg "No bandages!" 28
+    stop
+  endif
+
+  //
+  // mana
+  //
+  while mana < maxmana
+      useskill 'meditation'
+      pause 11500
+  endwhile
+
+  //
+  // heal
+  //
+  @removetimer 'healing'
+  @createtimer 'healing'
+  @clearjournal
+  while hits < 30
+    bandageself
+    while not @injournal 'heal' 'system' and not @injournal 'finish' 'system' and timer 'healing' < 20000
+      pause 1000
+    endwhile
+  endwhile
+
+  //
+  // cast
+  //
+  @canceltarget
+  cast "lightning"
+  waitfortarget 5000
+  target! 'self'
+  pause 1000
+
+  //
+  // skill check
+  //
+  if skill 'Magery' == 60
+    headmsg "Im done" 93
+    stop
+  endif
+
+  pause 1000
+
+endwhile
