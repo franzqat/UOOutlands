@@ -16,7 +16,6 @@
 // * Throws explosions if you have them in your pack. 
 // * Taunts every 30 seconds
 //
-//
 // How to use?
 // -----------
 // 1) Save a dress profile named 'default' with your equipment
@@ -30,6 +29,8 @@
 // * The script has no idea which crew are lower health than other.
 //   This is a UO Steam limitation on this server - can't do it.
 //   If you have a certain crew member near death, manually heal them.
+// * Enable [X] Check hands before potions
+// * Set "Delay between actions" to [500ms]
 //
 // Versions
 // -----------

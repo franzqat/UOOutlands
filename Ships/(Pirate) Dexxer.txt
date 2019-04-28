@@ -28,6 +28,8 @@
 // * The script has no idea which crew are lower health than other.
 //   This is a UO Steam limitation on this server - can't do it.
 //   If you have a certain crew member near death, manually heal them.
+// * Enable [X] Check hands before potions
+// * Set "Delay between actions" to [500ms]
 //
 // Versions
 // -----------

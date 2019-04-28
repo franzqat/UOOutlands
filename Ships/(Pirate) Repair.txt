@@ -79,6 +79,57 @@ while not dead
     pause 100
   endif
   //
+  // Cures
+  //
+  if poisoned and @findtype! 0xf07 0 'backpack'
+    headmsg "[Cure] Potion" 194
+    clearhands 'right'
+    pause 1000
+    useobject! 'found'
+    pause 2000  
+  endif
+  //
+  // Heals
+  //
+  if diffhits > 60 and not poisoned 
+    if @findtype 0xf0c 0 'backpack'
+        headmsg "[Heal] Potion" 53
+        clearhands 'right'
+        pause 1000
+        useobject! 'found'
+        pause 2000
+    endif
+  endif
+  //
+  // run dress macro
+  //
+  dress 'default'
+  while dressing
+  endwhile
+  //
+  // attack enemy near you
+  //
+  @unsetalias 'enemy'
+  @Getenemy 'murderer' 'enemy' 'criminal' 'gray'
+  attack! 'enemy'
+  //
+  // wait for bandage finish
+  //
+  if @timerexists 'healing'
+    if timer 'healing' > 15000
+      @removetimer 'healing'
+    endif
+    if @injournal 'heal' 'system'
+      @removetimer 'healing'
+    endif
+    if @injournal 'cure' 'system'
+      @removetimer 'healing'
+    endif
+    if @injournal 'finish' 'system'
+      @removetimer 'healing'
+    endif
+  endif
+  //
   // Do I need a bandage?
   //
   if not @timerexists 'healing'
