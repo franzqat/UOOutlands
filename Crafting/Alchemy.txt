@@ -8,7 +8,7 @@
 // 1) Start at bank
 // 2) Modify script for potion you want to use
 // 3) Have 1 bag in bank with your regs
-// 4) Have 1 bag in back with your empty kegs
+// 4) Have 1 bag in bank with your empty kegs (or same)
 // 5) Stock backpack with pestles (lots!) and 1 bottle
 // 6) Run script
 //
