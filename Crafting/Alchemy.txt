@@ -403,6 +403,15 @@ while not dead
         movetype 0x1940 'backpack' 'kegbag' 0 0 0 'any' 1
         pause 2000
     endif
+
+    //
+    // World save check
+    //
+    if @injournal 'world will save' 'system'
+      sysmsg 'pausing for world save'
+      pause 30000
+    endif
+
     @clearjournal
 
 endwhile
