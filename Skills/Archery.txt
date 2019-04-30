@@ -39,7 +39,7 @@ sysmsg "Trainer Script - Archery" 88
 sysmsg "Version 2.0" 88
 
 @useobject 'backpack'
-pause 1000
+pause 2000
 
 if not findalias 'bankrune'
     sysmsg "Select rune for bank access" 88
@@ -89,6 +89,11 @@ msg "bank"
 pause 1000
 
 while not dead
+
+    if skill 'archery' == 100
+        headmsg "woohoo! im done!"
+        stop
+    endif
 
     // 
     // Reg/arrow check
