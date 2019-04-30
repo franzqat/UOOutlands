@@ -18,12 +18,18 @@
 // * If you are hurt, you target yourself 
 // * If you are not hurt, holds spell
 // * If you are poisoned, and you have a cure pot, drinks it
-// * If you are poisoned, and you do not have a cure pot, cures you instead
+// * If you are poisoned, and you do not have a cure pot, cures 
+//   you instead with a spell before attempting to heal
 //
 // How to use?
 // -----------
 // 1) Record a dress agent named 'default'
-// 2) Run script
+// 2) Run script when you want to cast 'GHeal'
+//
+// Important Notes
+// ---------------
+// * Enable [X] Check hands before potions
+// * Set "Delay between actions" to [500ms]
 //
 // Version 1.0
 // -----------
