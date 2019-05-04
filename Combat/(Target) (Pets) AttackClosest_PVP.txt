@@ -23,8 +23,12 @@
 // Scan for targets
 //
 for 0 to 20
-    @getenemy 'murderer' 'enemy' 'criminal' 'gray' 'next'
-    @pushlist! 'enemies' 'enemy'
+  if murderer 'self'
+    @getenemy 'murderer' 'innocent' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
+  else
+    @getenemy 'murderer' 'enemy' 'criminal' 'gray' 'humanoid' 'next'
+  endif
+  @pushlist! 'enemies' 'enemy'
 endfor
 
 //
