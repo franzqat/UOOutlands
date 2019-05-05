@@ -42,9 +42,16 @@
 // START COPY >>
 /////////////////////////////////////////////
 
-sysmsg "Fight macro starting..." 94
-if @timerexists 'healing'
-  sysmsg "Resuming bandage..." 55
+
+//
+// Determine whether its a start or resume
+//
+if @timerexists 'healing' and timer 'healing' < 15000
+  sysmsg "Resuming bandage macro..." 55
+else
+  sysmsg "Bandage macro starting..." 94
+  @removetimer 'healing'
+  @removelist 'tics'
 endif
 
 //
@@ -104,12 +111,14 @@ while not dead
   //
   // Cures
   //
-  if poisoned and @findtype! 0xf07 0 'backpack'
-    headmsg "[Cure] Potion" 194
-    useobject! 'found'
-    pause 1000
-  else
-    sysmsg "Out of cures!" 28
+  if poisoned
+    if @findtype! 0xf07 0 'backpack'
+      headmsg "[Cure] Potion" 194
+      useobject! 'found'
+      pause 1000
+    else
+      sysmsg "Out of cures!" 28
+    endif
   endif
 
   //
@@ -120,9 +129,9 @@ while not dead
         headmsg "[Heal] Potion" 53
         useobject! 'found'
         pause 1000
-    endif  
-  else
-    sysmsg "Out of heals!" 28
+    else
+      sysmsg "Out of heals!" 28
+    endif
   endif
 
   //
@@ -148,13 +157,13 @@ while not dead
   //
   if @timerexists 'healing'
     if @injournal 'heal' 'system' 
-      removetimer 'healing'
+      @removetimer 'healing'
       continue
     elseif @injournal 'cure' 'system' 
-      removetimer 'healing'
+      @removetimer 'healing'
       continue
     elseif @injournal 'finish' 'system'
-      removetimer 'healing'
+      @removetimer 'healing'
       continue
     endif
     if timer 'healing' > 15000
@@ -166,7 +175,7 @@ while not dead
     //
     if diffhits > 5 and counttype '0xe21' 'any' 'backpack' > 0
       if not hidden
-        createtimer 'healing'
+        @createtimer 'healing'
         headmsg "++bandaging++" 73
         bandageself
         @clearjournal      
