@@ -8,10 +8,17 @@
 //
 // Version History:
 // ----------------
-// * 1.0 complete rewrite
+// 1.0 complete rewrite
+// 1.1 toggles war mode to clear current combatant
 //
 // >> COPY BELOW >> 
 /////////////////////////////////////////////
+
+//
+// Toggle war mode
+//
+warmode 'on'
+warmode 'off'
 
 //
 // Create temporary list
@@ -65,7 +72,7 @@ for 0 to 'distances'
     endif
 endfor
 
-//
+//[]
 // Drop target on enemy
 //
 if @findobject 'enemy' and targetexists
