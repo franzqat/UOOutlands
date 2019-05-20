@@ -1,0 +1,25 @@
+/////////////////////////////////////////////
+// UO Steam Skill Trainer - Hiding
+// for Outlands
+// by Jewele
+//
+// Trains hiding
+//
+// How to use?
+// -----------
+// 1) Run script
+//
+// Version 2.0
+// -----------
+// Rewrite after asg removal
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
+/////////////////////////////////////////////
+
+sysmsg "Buff Trainer Script - Hiding" 88
+sysmsg "Version 2.0" 88
+
+while not dead
+    useskill 'Hiding'
+    pause 10500
+endwhile
