@@ -29,6 +29,9 @@
 sysmsg "Buff Trainer Script - Arms Lore" 88
 sysmsg "Version 2.0" 88
 
+@useobject 'backpack'
+pause 1000
+
 while not dead
     @findtype 0xf52 'any' 'backpack'
     autotargetobject 'found'
