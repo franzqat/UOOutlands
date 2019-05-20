@@ -1,12 +1,29 @@
 /////////////////////////////////////////////
 // UO Steam Camping Training Macro
 // for Outlands
+// by Jewele
 //
 // Camping gains passively while you are creating it
 // so this macro will pause until your camp is secure
 // rather than burning through kindling nonstop.
 //
+// How to use?
+// -----------
+// 1) Stock pack with kindling
+// 2) Run script
+//
+// Version 2.0
+// -----------
+// Rewrite for asg removal
+//
+// UOSTEAM COPY-PASTE BELOW THIS LINE
 /////////////////////////////////////////////
+
+sysmsg "Camping Trainer Script" 88
+sysmsg "Version 2.0" 88
+
+@useobject 'backpack'
+pause 1000
 
 // Create camping timer
 removetimer 'camp'
@@ -15,7 +32,7 @@ createtimer 'camp'
 //
 // While alive
 //
-while hits > 0
+while not dead
 
     @clearjournal
 
