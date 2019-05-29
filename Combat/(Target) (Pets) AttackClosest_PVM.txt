@@ -10,6 +10,7 @@
 // ----------------
 // 1.0 complete rewrite
 // 1.1 toggles war mode to clear current combatant
+// 1.2 a short pause is required before herding
 //
 // >> COPY BELOW >> 
 /////////////////////////////////////////////
@@ -96,6 +97,7 @@ if @findobject 'enemy' and @inrange 'enemy' 15
     msg "ALL KILL"
     waitfortarget 5000
     target! 'last'
+    pause 500
     // Herd
     if findtype '0xe81' 'any' 'backpack'
         useobject 'found'
