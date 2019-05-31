@@ -5,8 +5,8 @@
 // Steps for using:
 // 1) Have blank maps
 // 2) Have mapmakers pen
-// 3) !IMPORTANT : Attempt to make one of the items you want so it sets Make Last
-// 4) Set to [X] Loop, run
+// 3) Select the chest with enough blank maps
+// 4) Profit
 //
 // Version 1.0
 // -----------
@@ -16,44 +16,74 @@
 // -----------
 // * uses trash can instead
 //
-/////////////////////////////////////////////
-
-// 
-// Pen check
+// Version 1.2
+// -----------
+// * no need for loop
+// * auto select proper map
+// * chest for blank maps
+// * restock from chest
 //
-if counttype 0xfbf 'any' 'backpack' < 1
+/////////////////////////////////////////////
+promptalias 'Resources'
+@useobject 'Resources'
+pause 500
+//
+// Loop
+while not dead
+  //
+  // Pen check
+  //
+  if counttype 0xfbf 'any' 'backpack' < 1
     headmsg 'I have no pens!' '88'
     stop
-endif
-
-// 
-// Map check
-//
-if counttype 0x14ec '2955' 'backpack' < 1
-    headmsg 'I have no blank maps!' '88'
-    stop
-endif
-
-//
-// Trash can
-//
-if not findalias 'trash'
+  endif
+  //
+  // Map check
+  //
+  if counttype 0x14ec '2955' 'backpack' < 1
+    if findtype 0x14ec '2955' 'Resources'
+      moveitem 'found' 'backpack' 65 65 0 100
+    else
+      headmsg 'I have no blank maps!' '88'
+      stop
+    endif
+  endif
+  //
+  // Trash can
+  //
+  if not findalias 'trash'
     sysmsg "Select a trash barrel"
     promptalias 'trash'
-endif
-
-//
-// Make last map
-//
-@findtype 0xfbf 'any' 'backpack'  
-useobject 'found'
-pause 100
-waitforgump 0x38920abd 5000
-replygump 0x38920abd 7
-pause 500
-
-// Dump to trash
-while @findtype 0x14ec 2669 'backpack'
+  endif
+  //
+  // Make last map
+  //
+  @findtype 0xfbf 'any' 'backpack'
+  useobject 'found'
+  pause 100
+  if skill 'Cartography' < 75
+    // Build a City map
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 100
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 201
+    waitforgump 0x38920abd 15000
+    waitforgump 0x38920abd 15000
+  elseif skill 'Cartography' < 100
+    // Build a Regional Map
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 100
+    waitforgump 0x38920abd 15000
+    replygump 0x38920abd 202
+    waitforgump 0x38920abd 15000
+    waitforgump 0x38920abd 15000
+  endif
+  //waitforgump 0x38920abd 5000
+  //replygump 0x38920abd 7
+  pause 500
+  // Dump to trash
+  while @findtype 0x14ec 2669 'backpack'
     movetype 0x14ec 'backpack' 'trash' 0 0 0 2669 1
     pause 1000
+  endwhile
 endwhile
